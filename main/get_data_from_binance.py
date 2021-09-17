@@ -24,7 +24,7 @@ def getting_data_from_binance():
     global locked, free, asset, total_usd, total_eur, price_e
     # global asset
     if status.get("msg") == 'normal':
-        # Assets.query.delete()
+        Assets.query.delete()
         super_total = 0
         for balance in balances:
             locked = float(balance.get("locked"))
