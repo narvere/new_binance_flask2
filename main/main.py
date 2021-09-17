@@ -3,7 +3,9 @@ import pytz
 from flask import render_template
 from time import time
 from get_data_from_binance import getting_data_from_binance
-
+from acink import main
+import asyncio
+# pip install flask[async]
 # pip install flask
 # pip install pytz
 zone_ee = pytz.timezone('Europe/Tallinn')
@@ -34,6 +36,15 @@ def my_coins():
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     return render_template('index.html', my_assets=my_assets, super_total_usd=super_total_usd,
                            super_total_eur=super_total_eur, number=number)
+
+@app.route('/all_pairs/', methods=['POST', 'GET'])
+async def all_pairs():
+    x = str(main())
+    return x
+
+@app.route('/all_usdt/', methods=['POST', 'GET'])
+async def all_usdt():
+    return "OK usdt"
 
 
 @app.route('/coin/<coin_name>/')

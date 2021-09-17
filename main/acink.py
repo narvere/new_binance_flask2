@@ -8,10 +8,10 @@ from binance_info import api_key, api_secret
 from binance import AsyncClient
 
 meta = MetaData()
-
+#
 engine = create_engine('sqlite:///binance2.db')
 conn = engine.connect()
-
+#
 all_tickers = Table(
     'all_tickers', meta,
     Column('id', Integer, primary_key=True),
@@ -29,7 +29,8 @@ arr = []
 
 async def main():
     client = await AsyncClient.create(api_key, api_secret)
-    # account = await client.get_account()
+    account = await client.get_account()
+    print(account)
 
     # 1 await all_tradable_pairs(client)
     # await select_from_db()
