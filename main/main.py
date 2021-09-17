@@ -4,6 +4,8 @@ from flask import render_template
 from time import time
 from get_data_from_binance import getting_data_from_binance
 
+#pip install flask
+#pip install pytz
 zone_ee = pytz.timezone('Europe/Tallinn')
 
 
