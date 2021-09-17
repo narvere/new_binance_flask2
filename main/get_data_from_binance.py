@@ -1,16 +1,16 @@
 from binance_info import status, balances, client
-from dbs import db, User
+from dbs import db, Assets
 
 
 def save_or_update_db():
-    exists = db.session.query(User.id).filter_by(asset=asset).first() is not None
+    exists = db.session.query(Assets.id).filter_by(asset=asset).first() is not None
     if not exists:
-        admin = User(asset=asset, free=free, locked=locked, total_usd=total_usd, total_eur=total_eur)
+        admin = Assets(asset=asset, free=free, locked=locked, total_usd=total_usd, total_eur=total_eur)
 
         db.session.add(admin)
         db.session.commit()
     else:
-        admin = User.query.filter_by(asset=asset).first()
+        admin = Assets.query.filter_by(asset=asset).first()
         admin.free = free
         admin.locked = locked
         admin.total_usd = total_usd
@@ -24,7 +24,7 @@ def getting_data_from_binance():
     global locked, free, asset, total_usd, total_eur, price_e
     # global asset
     if status.get("msg") == 'normal':
-        User.query.delete()
+        # Assets.query.delete()
         super_total = 0
         for balance in balances:
             locked = float(balance.get("locked"))

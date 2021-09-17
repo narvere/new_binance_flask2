@@ -1,4 +1,4 @@
-from dbs import User, Orders, db, app
+from dbs import Assets, Orders, db, app
 import pytz
 from flask import render_template
 from time import time
@@ -46,7 +46,7 @@ def coin(coin_name):
 
 def coin_shown_engine():
     t0 = time()
-    my_assets = User.query.order_by(-User.total_usd).all()
+    my_assets = Assets.query.order_by(-Assets.total_usd).all()
     super_total_usd = round(currency('total_usd'), 2)
     super_total_eur = round(currency('total_eur'), 2)
     number = count_of_coins()
@@ -57,16 +57,16 @@ def coin_shown_engine():
 
 def currency(asset):
     if asset == 'total_usd':
-        super_total_usds = db.session.query(db.func.sum(User.total_usd))
+        super_total_usds = db.session.query(db.func.sum(Assets.total_usd))
     else:
-        super_total_usds = db.session.query(db.func.sum(User.total_eur))
+        super_total_usds = db.session.query(db.func.sum(Assets.total_eur))
     for super_total_usd in super_total_usds:
         for i in super_total_usd:
             return i
 
 
 def count_of_coins():
-    numbers = db.session.query(db.func.count(User.asset))
+    numbers = db.session.query(db.func.count(Assets.asset))
     for nr in numbers:
         for number in nr:
             return number
