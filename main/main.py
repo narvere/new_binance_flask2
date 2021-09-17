@@ -4,8 +4,8 @@ from flask import render_template
 from time import time
 from get_data_from_binance import getting_data_from_binance
 
-#pip install flask
-#pip install pytz
+# pip install flask
+# pip install pytz
 zone_ee = pytz.timezone('Europe/Tallinn')
 
 
@@ -41,8 +41,6 @@ def coin(coin_name):
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     return render_template('my_coin.html', coin_name=coin_name, my_assets=my_assets)
 
-
-#
 
 def coin_shown_engine():
     t0 = time()
