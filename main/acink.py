@@ -12,27 +12,29 @@ meta = MetaData()
 engine = create_engine('sqlite:///binance2.db')
 conn = engine.connect()
 #
-all_tickers = Table(
-    'all_tickers', meta,
+Binance_tickers = Table(
+    'Binance_tickers', meta,
     Column('id', Integer, primary_key=True),
     Column('ticker', String(20), nullable=False),
 )
 
-usdt_tickers = Table(
-    'usdt_tickers', meta,
+Usdt_tickers = Table(
+    'Usdt_tickers', meta,
     Column('id', Integer, primary_key=True),
     Column('ticker', String(20), nullable=False, unique=True),
 )
+## Если надо загрузить данные с сервера снимаю коммент и отключаю main()
+# meta.create_all(engine)
 
 arr = []
 
 
-async def main():
+async def mains():
     client = await AsyncClient.create(api_key, api_secret)
-    account = await client.get_account()
-    print(account)
+    # account = await client.get_account()
+    # print(account)
 
-    # 1 await all_tradable_pairs(client)
+    await all_tradable_pairs(client)
     # await select_from_db()
 
     # 2 await one_ticker_info(client)
@@ -43,7 +45,7 @@ async def main():
 
 
 async def select_from_db():
-    tisks = all_tickers.select().where(all_tickers.c.id > 0)
+    tisks = Binance_tickers.select().where(Binance_tickers.c.id > 0)
     result = conn.execute(tisks)
     for row in result:
         t = row[1]
@@ -52,10 +54,10 @@ async def select_from_db():
 
 
 async def one_ticker_info(client):
-    delete_symbol = usdt_tickers.delete()
+    delete_symbol = Binance_tickers.delete()
     conn.execute(delete_symbol)
     count = 0
-    tisks = all_tickers.select().where(all_tickers.c.id > 0)
+    tisks = Binance_tickers.select().where(Binance_tickers.c.id > 0)
     result = conn.execute(tisks)
     for symbol1 in result:
         info1 = await client.get_symbol_info(symbol1[1])
@@ -65,7 +67,7 @@ async def one_ticker_info(client):
         permissions = info1.get('permissions')
         if 'SPOT' in permissions and quoteAsset == 'USDT':
             print(time(), symbol, baseAsset, quoteAsset, permissions)
-            add_symbol = usdt_tickers.insert().values(ticker=symbol)
+            add_symbol = Binance_tickers.insert().values(ticker=symbol)
             # update_symbol = tickers.update().values(ticker=symbol)
             conn.execute(add_symbol)
             await asyncio.sleep(2)
@@ -87,15 +89,15 @@ async def all_usdt_pairs(client):
 
 async def all_tradable_pairs(client):
     tickers1 = await client.get_orderbook_tickers()
-    delete_symbol = all_tickers.delete()
-    conn.execute(delete_symbol)
+    # delete_symbol = all_tickers.delete()
+    # conn.execute(delete_symbol)
     count = 0
     for ticker in tickers1:
         bidPrice = float(ticker.get('bidPrice'))
         if bidPrice > 0:
             count += 1
             symbol = ticker.get('symbol')
-            add_symbol = all_tickers.insert().values(ticker=symbol)
+            add_symbol = Binance_tickers.insert().values(ticker=symbol)
             # update_symbol = tickers.update().values(ticker=symbol)
             conn.execute(add_symbol)
             print(count, symbol)
@@ -149,6 +151,8 @@ async def my_last_trades(asset, client, cur):
 if __name__ == "__main__":
     t0 = time()
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    loop.run_until_complete(mains())
     tt = time() - t0
     print(tt)
+
+#104s

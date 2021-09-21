@@ -30,8 +30,10 @@
                 </div>
                 <div class="col">
                     <form action="{{ url_for('all_pairs') }}">
-                        <button type="submit" class="btn btn-primary btn-lg">Загрузить все пары</button>
+                        <button type="submit" class="btn btn-primary btn-lg">Посмотреть все пары</button>
                     </form>
+                    <br>
+                    <p>Всего на бирже <b>{{ tickers_number }}</b> торговых пар.</p>
                 </div>
                 <div class="col">
                     <form action="{{ url_for('all_usdt') }}">

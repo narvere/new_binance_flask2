@@ -22,7 +22,6 @@ def save_or_update_db():
 
 def getting_data_from_binance():
     global locked, free, asset, total_usd, total_eur, price_e
-    # global asset
     if status.get("msg") == 'normal':
         Assets.query.delete()
         super_total = 0
