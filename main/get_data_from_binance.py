@@ -1,11 +1,13 @@
 from binance_info import status, balances, client
 from dbs import db, Assets
+from funcs import trading_view_recommendation
 
 
 def save_or_update_db():
     exists = db.session.query(Assets.id).filter_by(asset=asset).first() is not None
     if not exists:
-        admin = Assets(asset=asset, free=free, locked=locked, total_usd=total_usd, total_eur=total_eur)
+        admin = Assets(asset=asset, free=free, locked=locked, total_usd=total_usd, total_eur=total_eur,
+                       recommendatsion=recommendatsion)
 
         db.session.add(admin)
         db.session.commit()
@@ -15,13 +17,14 @@ def save_or_update_db():
         admin.locked = locked
         admin.total_usd = total_usd
         admin.total_eur = total_eur
+        admin.recommendatsion = recommendatsion
 
         db.session.add(admin)
         db.session.commit()
 
 
 def getting_data_from_binance():
-    global locked, free, asset, total_usd, total_eur, price_e
+    global locked, free, asset, total_usd, total_eur, price_e, recommendatsion
     if status.get("msg") == 'normal':
         Assets.query.delete()
         super_total = 0
@@ -31,6 +34,10 @@ def getting_data_from_binance():
             if locked > 0 or free > 0:
                 asset = str(balance.get("asset"))
                 if asset != 'USDT' and asset != 'LDUSDT' and asset != 'BETH':
+                    try:
+                        recommendatsion = trading_view_recommendation(asset)
+                    except:
+                        recommendatsion = "No info"
                     avg_price_usd = client.get_avg_price(symbol=f'{asset}USDT')
                     price_eur = client.get_avg_price(symbol=f'EURUSDT')
                     price_e = round(float(price_eur.get("price")), 5)
@@ -54,7 +61,6 @@ def getting_data_from_binance():
         return
     else:
         print("Binance is down")
-
 
 # def super_super():
 #     super_total_usd = round(super_total, 2)

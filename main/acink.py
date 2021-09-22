@@ -37,7 +37,7 @@ async def mains():
     await all_tradable_pairs(client)
     # await select_from_db()
 
-    # 2 await one_ticker_info(client)
+    # 2await one_ticker_info(client)
 
     # await all_usdt_pairs(client)
 
@@ -54,8 +54,9 @@ async def select_from_db():
 
 
 async def one_ticker_info(client):
-    delete_symbol = Binance_tickers.delete()
-    conn.execute(delete_symbol)
+    print(111)
+    # delete_symbol = Binance_tickers.delete()
+    # conn.execute(delete_symbol)
     count = 0
     tisks = Binance_tickers.select().where(Binance_tickers.c.id > 0)
     result = conn.execute(tisks)

@@ -15,12 +15,22 @@ db = SQLAlchemy(app)
 
 
 class Assets(db.Model):
+    __tablename__ = 'assets'
     id = db.Column(db.Integer, primary_key=True)
     asset = db.Column(db.String(50), nullable=False)
     free = db.Column(db.Float, unique=False, nullable=True)
     locked = db.Column(db.Float, unique=False, nullable=True)
     total_usd = db.Column(db.Float, unique=False, nullable=True)
     total_eur = db.Column(db.Float, unique=False, nullable=True)
+    recommendatsion = db.Column(db.String(50), nullable=False)
+
+    def __init__(self, asset, free, locked, total_usd, total_eur, recommendatsion):
+        self.asset = asset
+        self.free = free
+        self.locked = locked
+        self.total_usd = total_usd
+        self.total_eur = total_eur
+        self.recommendatsion = recommendatsion
 
     def __repr__(self):
         return '<Assets %r>' % self.asset
