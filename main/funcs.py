@@ -15,6 +15,19 @@ def trading_view_recommendation(coin):
     return recommend
 
 
+
+def trading_view_recommendation_all(coin):
+    tesla = TA_Handler(
+        symbol=f"{coin}",
+        screener="CRYPTO",
+        exchange="BINANCE",
+        interval=Interval.INTERVAL_4_HOURS
+    )
+    recommend = tesla.get_analysis().summary.get('RECOMMENDATION')
+    return recommend
+
+
+
 def count_of_coins(xxx):
     numbers = db.session.query(db.func.count(xxx.id))
     for nr in numbers:
@@ -57,25 +70,29 @@ def read_all_pairs():
 
 def all_tradable_pairs(client):
     # t0 = time()
+    global recommendatsion_all
     tickers1 = client.get_orderbook_tickers()
     all_tickers.query.delete()
     count = 0
 
-    for ticker in tickers1:
+    for ticker in tickers1[:7]:
         bidPrice = float(ticker.get('bidPrice'))
         if bidPrice > 0:
             count += 1
             symbol = ticker.get('symbol')
             exists = db.session.query(all_tickers.id).filter_by(ticker=symbol).first() is not None
             if not exists:
-                admin2 = all_tickers(ticker=symbol)
+                recommendatsion_all = trading_view_recommendation_all(symbol)
+                admin2 = all_tickers(ticker=symbol, recommendatsion=recommendatsion_all)
                 db.session.add(admin2)
                 db.session.commit()
             else:
                 admin = all_tickers.query.filter_by(ticker=symbol).first()
                 admin.ticker = symbol
+                # admin.recommendatsion_all = trading_view_recommendation_all(symbol)
                 db.session.add(admin)
                 db.session.commit()
+                print('11111111')
             print(count, symbol)
     # tt = time() - t0
     # print(tt)

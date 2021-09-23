@@ -33,21 +33,23 @@ def getting_data_from_binance():
             free = float(balance.get("free"))
             if locked > 0 or free > 0:
                 asset = str(balance.get("asset"))
-                if asset != 'USDT' and asset != 'LDUSDT' and asset != 'BETH':
+                if asset != 'USDT' and asset != 'BETH':
                     try:
                         recommendatsion = trading_view_recommendation(asset)
+                        avg_price_usd = client.get_avg_price(symbol=f'{asset}USDT')
+                        price_eur = client.get_avg_price(symbol=f'EURUSDT')
+                        price_e = round(float(price_eur.get("price")), 5)
+                        price = round(float(avg_price_usd.get("price")), 5)
+                        # price = 1
+                        # print(f"1 {asset} = {price} USDT, EUR = {price_eur}")
+                        free = float(balance.get("free"))
+                        locked = float(balance.get("locked"))
+                        total_usd = round((free + locked) * price, 2)
+                        total_eur = round(total_usd / float(price_e), 2)
                     except:
                         recommendatsion = "No info"
-                    avg_price_usd = client.get_avg_price(symbol=f'{asset}USDT')
-                    price_eur = client.get_avg_price(symbol=f'EURUSDT')
-                    price_e = round(float(price_eur.get("price")), 5)
-                    price = round(float(avg_price_usd.get("price")), 5)
-                    # price = 1
-                    # print(f"1 {asset} = {price} USDT, EUR = {price_eur}")
-                    free = float(balance.get("free"))
-                    locked = float(balance.get("locked"))
-                    total_usd = round((free + locked) * price, 2)
-                    total_eur = round(total_usd / float(price_e), 2)
+                        print(asset)
+
                 else:
                     total_usd = round((free + locked), 2)
                 super_total += total_usd

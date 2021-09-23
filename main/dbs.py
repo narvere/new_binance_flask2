@@ -1,17 +1,27 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+# set FLASK_APP=dbs.py
+# flask db init
+# flask db migrate -m "Initial migration."
+# flask db upgrade
 
 # pip install flask-sqlalchemy
 # from dbs import db
 # db.create_all()
 
 # .\venv\Scripts\activate
-app = Flask(__name__)
+db = SQLAlchemy()
 
+
+app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///binance.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+db.init_app(app)
+
+migrate = Migrate(app, db)
+
 
 
 class Assets(db.Model):
@@ -22,7 +32,7 @@ class Assets(db.Model):
     locked = db.Column(db.Float, unique=False, nullable=True)
     total_usd = db.Column(db.Float, unique=False, nullable=True)
     total_eur = db.Column(db.Float, unique=False, nullable=True)
-    recommendatsion = db.Column(db.String(50), nullable=False)
+    recommendatsion = db.Column(db.String(50), nullable=True)
 
     def __init__(self, asset, free, locked, total_usd, total_eur, recommendatsion):
         self.asset = asset
@@ -54,6 +64,7 @@ class Orders(db.Model):
 class all_tickers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticker = db.Column(db.String(20), nullable=False, unique=True)
+    recommendatsion = db.Column(db.String(50), nullable=True)
 
     def __repr__(self):
         return '<Ticker %r>' % self.ticker
