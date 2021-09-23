@@ -2,11 +2,14 @@ import pytz
 from flask import render_template
 from get_data_from_binance import getting_data_from_binance
 from dbs import all_tickers, app
-from funcs import read_all_pairs, coin_shown_engine, count_of_coins, trading_view_recommendation
+from funcs import read_all_pairs, coin_shown_engine, count_of_coins, trading_view_recommendation, all_tradable_pairs
+from binance_info import client
 
 # pip install flask[async]
 # pip install flask
 # pip install pytz
+
+
 zone_ee = pytz.timezone('Europe/Tallinn')
 
 
@@ -30,7 +33,7 @@ def my_coins():
 
 @app.route('/all_pairs/', methods=['POST', 'GET'])
 async def all_pairs():
-    # all_tradable_pairs(client)
+    all_tradable_pairs(client)
     all_pairs = read_all_pairs()
 
     return render_template('all_pairs.html', all_pairs=all_pairs)

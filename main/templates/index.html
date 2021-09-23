@@ -24,9 +24,22 @@
                         <button type="submit" class="btn btn-primary btn-lg">Загрузить мои монеты</button>
                     </form>
                     <br>
-                    <p>Всего у меня <b>{{ super_total_usd }}</b> USDT.</p>
-                    <p>Всего у меня <b>{{ super_total_eur }}</b> EUR.</p>
-                    <p>Всего у меня <b>{{ number }}</b> монет.</p>
+                    <p>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseWidthExample" aria-expanded="false"
+                                aria-controls="collapseWidthExample">
+                            My wallet
+                        </button>
+                    </p>
+                    <div style="min-height: 120px;">
+                        <div class="collapse collapse-horizontal" id="collapseWidthExample">
+                            <div class="card card-body" style="width: 300px;">
+                                <p>Всего у меня <b>{{ super_total_usd }}</b> USDT.</p>
+                                <p>Всего у меня <b>{{ super_total_eur }}</b> EUR.</p>
+                                <p>Всего у меня <b>{{ number }}</b> монет.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col">
                     <form action="{{ url_for('all_pairs') }}">
@@ -66,9 +79,15 @@
                 <td>{{el.locked}}</td>
                 <td>$ {{el.total_usd}}</td>
                 <td>€ {{el.total_eur}}</td>
-                <td><a target="_blank" rel="noopener noreferrer" href="https://ru.tradingview.com/symbols/{{ el.asset }}USDT/" class="btn btn-outline-info">TradingView</a></td>
-                <td><a target="_blank" rel="noopener noreferrer" href="https://ru.tradingview.com/chart/NxJ5WI0f/?symbol=BINANCE%3A{{ el.asset }}USDT" class="btn btn-outline-danger">Chart</a></td>
-                <td><a target="_blank" rel="noopener noreferrer" href="https://www.binance.com/ru/trade/{{ el.asset }}_USDT?layout=basic" class="btn btn-outline-warning">Binance</a></td>
+                <td><a target="_blank" rel="noopener noreferrer"
+                       href="https://ru.tradingview.com/symbols/{{ el.asset }}USDT/" class="btn btn-outline-info">TradingView</a>
+                </td>
+                <td><a target="_blank" rel="noopener noreferrer"
+                       href="https://ru.tradingview.com/chart/NxJ5WI0f/?symbol=BINANCE%3A{{ el.asset }}USDT"
+                       class="btn btn-outline-danger">Chart</a></td>
+                <td><a target="_blank" rel="noopener noreferrer"
+                       href="https://www.binance.com/ru/trade/{{ el.asset }}_USDT?layout=basic"
+                       class="btn btn-outline-warning">Binance</a></td>
                 {% if el.recommendatsion == 'BUY' %}
                 <td><span class="badge bg-success">{{ el.recommendatsion }}</span></td>
                 {% elif el.recommendatsion == 'SELL' %}
@@ -78,8 +97,12 @@
                 {% elif el.recommendatsion == 'NEUTRAL' %}
                 <td><span class="badge bg-secondary">{{ el.recommendatsion }}</span></td>
                 {% else %}
-                {{ el.recommendatsion }}
+                <td><a target="_blank" rel="noopener noreferrer"
+                       href="https://www.binance.com/ru/my/wallet/account/saving">Earn</a></td>
+                </td>
+
                 {% endif %}
+
             </tr>
             {% endfor %}
             </tbody>
