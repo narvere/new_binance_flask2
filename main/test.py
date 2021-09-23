@@ -45,10 +45,10 @@ def count_of_coins(xxx):
     # qry = (db.session.query(db.func.count(xxx.id))
     #        .filter(xxx.recommendatsion.like("BUY")))
 
-    qry = select([func.count(xxx.id)],
-                 and_(xxx.company == 31,
-                      xxx.date.like('2010-05%')
-                      ))
+    # qry = select([func.count(xxx.id)],
+    #              and_(xxx.company == 31,
+    #                   xxx.date.like('2010-05%')
+    #                   ))
 
 
     # peter = xxx.query.filter_by.count(recommendatsion='BUY')

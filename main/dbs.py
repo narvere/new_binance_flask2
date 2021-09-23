@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-# set FLASK_APP=dbs.py
+# # set FLASK_APP=dbs.py
 # flask db init
 # flask db migrate -m "Initial migration."
 # flask db upgrade

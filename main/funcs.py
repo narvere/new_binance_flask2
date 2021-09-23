@@ -15,7 +15,6 @@ def trading_view_recommendation(coin):
     return recommend
 
 
-
 def trading_view_recommendation_all(coin):
     tesla = TA_Handler(
         symbol=f"{coin}",
@@ -25,7 +24,6 @@ def trading_view_recommendation_all(coin):
     )
     recommend = tesla.get_analysis().summary.get('RECOMMENDATION')
     return recommend
-
 
 
 def count_of_coins(xxx):
