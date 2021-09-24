@@ -32,14 +32,16 @@ class Assets(db.Model):
     total_usd = db.Column(db.Float, unique=False, nullable=True)
     total_eur = db.Column(db.Float, unique=False, nullable=True)
     recommendatsion = db.Column(db.String(50), nullable=True)
+    recommendatsion_d1 = db.Column(db.String(50), nullable=True)
 
-    def __init__(self, asset, free, locked, total_usd, total_eur, recommendatsion):
+    def __init__(self, asset, free, locked, total_usd, total_eur, recommendatsion, recommendatsion_d1):
         self.asset = asset
         self.free = free
         self.locked = locked
         self.total_usd = total_usd
         self.total_eur = total_eur
         self.recommendatsion = recommendatsion
+        self.recommendatsion_d1 = recommendatsion_d1
 
     def __repr__(self):
         return '<Assets %r>' % self.asset
