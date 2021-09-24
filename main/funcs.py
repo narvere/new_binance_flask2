@@ -4,12 +4,12 @@ from time import time
 from tradingview_ta import TA_Handler, Interval, Exchange
 
 
-def trading_view_recommendation(coin):
+def trading_view_recommendation(coin, interval):
     tesla = TA_Handler(
         symbol=f"{coin}USDT",
         screener="CRYPTO",
         exchange="BINANCE",
-        interval=Interval.INTERVAL_4_HOURS
+        interval=interval
     )
     recommend = tesla.get_analysis().summary.get('RECOMMENDATION')
     return recommend
@@ -63,7 +63,7 @@ def coin_shown_engine():
 
 def read_all_pairs():
     all_pairs = all_tickers.query.order_by(all_tickers.recommendatsion_all_day, all_tickers.recommendatsion).filter(
-        all_tickers.recommendatsion_all_day =='STRONG_BUY').all()
+        all_tickers.recommendatsion_all_day =='BUY').all()
     print("ok")
     return all_pairs
 
