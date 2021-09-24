@@ -33,8 +33,9 @@ def my_coins():
 
 @app.route('/all_pairs/', methods=['POST', 'GET'])
 async def all_pairs():
-    all_tradable_pairs(client)
+    # all_tradable_pairs(client)
     all_pairs = read_all_pairs()
+
 
     return render_template('all_pairs.html', all_pairs=all_pairs)
 

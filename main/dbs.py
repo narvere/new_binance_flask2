@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+
 # # set FLASK_APP=dbs.py
 # flask db init
 # flask db migrate -m "Initial migration."
@@ -13,7 +14,6 @@ from flask_migrate import Migrate
 # .\venv\Scripts\activate
 db = SQLAlchemy()
 
-
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///binance.db'
@@ -21,7 +21,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 migrate = Migrate(app, db)
-
 
 
 class Assets(db.Model):
@@ -65,6 +64,7 @@ class all_tickers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticker = db.Column(db.String(20), nullable=False, unique=True)
     recommendatsion = db.Column(db.String(50), nullable=True)
+    recommendatsion_all_day = db.Column(db.String(50), nullable=True)
 
     def __repr__(self):
         return '<Ticker %r>' % self.ticker

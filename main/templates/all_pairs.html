@@ -23,14 +23,47 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Актив</th>
+                            <th scope="col">Hour 4</th>
+                            <th scope="col">Day 1</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for el in all_pairs %}
-                        {% if loop.index < 409 %}
+                        {% if loop.index < 600 %}
                         <tr>
                             <th scope="row">{{loop.index}}</th>
-                            <td>{{el.ticker}}</td>
+                            <td><a target="_blank" rel="noopener noreferrer"
+                                   href="https://ru.tradingview.com/chart/NxJ5WI0f/?symbol=BINANCE%3A{{ el.ticker }}"
+                            >{{ el.ticker }}</a></td>
+                            {% if el.recommendatsion == 'BUY' %}
+                            <td><span class="badge bg-success">{{ el.recommendatsion }}</span></td>
+                            {% elif el.recommendatsion == 'SELL' %}
+                            <td><span class="badge bg-danger">{{ el.recommendatsion }}</span></td>
+                            {% elif el.recommendatsion == 'STRONG_SELL' %}
+                            <td><span class="badge bg-danger">{{ el.recommendatsion }}</span></td>
+                            {% elif el.recommendatsion == 'STRONG_BUY' %}
+                            <td><span class="badge bg-primary">{{ el.recommendatsion }}</span></td>
+                            {% elif el.recommendatsion == 'NEUTRAL' %}
+                            <td><span class="badge bg-secondary">{{ el.recommendatsion }}</span></td>
+                            {% else %}
+                            <td><a target="_blank" rel="noopener noreferrer"
+                                   href="https://www.binance.com/ru/my/wallet/account/saving">Earn</a></td>
+                            {% endif %}
+
+                            {% if el.recommendatsion_all_day == 'BUY' %}
+                            <td><span class="badge bg-success">{{ el.recommendatsion_all_day }}</span></td>
+                            {% elif el.recommendatsion_all_day == 'SELL' %}
+                            <td><span class="badge bg-danger">{{ el.recommendatsion_all_day }}</span></td>
+                            {% elif el.recommendatsion_all_day == 'STRONG_SELL' %}
+                            <td><span class="badge bg-danger">{{ el.recommendatsion_all_day }}</span></td>
+                            {% elif el.recommendatsion_all_day == 'STRONG_BUY' %}
+                            <td><span class="badge bg-primary">{{ el.recommendatsion_all_day }}</span></td>
+                            {% elif el.recommendatsion_all_day == 'NEUTRAL' %}
+                            <td><span class="badge bg-secondary">{{ el.recommendatsion_all_day }}</span></td>
+                            {% else %}
+                            <td><a target="_blank" rel="noopener noreferrer"
+                                   href="https://www.binance.com/ru/my/wallet/account/saving">Earn</a></td>
+                            {% endif %}
                         </tr>
                         {% endif %}
                         {% endfor %}
@@ -47,33 +80,41 @@
                         </thead>
                         <tbody>
                         {% for el in all_pairs %}
-                        {% if loop.index >= 409  and loop.index < 818%}
+                        {% if loop.index >= 600 %}
                         <tr>
                             <th scope="row">{{loop.index}}</th>
-                            <td>{{el.ticker}}</td>
-                        </tr>
-                        {% endif %}
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-sm">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Актив</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for el in all_pairs %}
-                        {% if loop.index >= 818 %}
-                        <tr>
-                            <th scope="row">{{loop.index}}</th>
-                            <td>{{el.ticker}}</td>
+                            <td><a target="_blank" rel="noopener noreferrer"
+                                   href="https://ru.tradingview.com/chart/NxJ5WI0f/?symbol=BINANCE%3A{{ el.ticker }}"
+                            >{{ el.ticker }}</a></td>
+                            {% if el.recommendatsion == 'BUY' %}
+                            <td><span class="badge bg-success">{{ el.recommendatsion }}</span></td>
+                            {% elif el.recommendatsion == 'SELL' %}
+                            <td><span class="badge bg-danger">{{ el.recommendatsion }}</span></td>
+                            {% elif el.recommendatsion == 'STRONG_SELL' %}
+                            <td><span class="badge bg-danger">{{ el.recommendatsion }}</span></td>
+                            {% elif el.recommendatsion == 'STRONG_BUY' %}
+                            <td><span class="badge bg-primary">{{ el.recommendatsion }}</span></td>
+                            {% elif el.recommendatsion == 'NEUTRAL' %}
+                            <td><span class="badge bg-secondary">{{ el.recommendatsion }}</span></td>
+                            {% else %}
+                            <td><a target="_blank" rel="noopener noreferrer"
+                                   href="https://www.binance.com/ru/my/wallet/account/saving">Earn</a></td>
+                            {% endif %}
 
-
-
+                            {% if el.recommendatsion_all_day == 'BUY' %}
+                            <td><span class="badge bg-success">{{ el.recommendatsion_all_day }}</span></td>
+                            {% elif el.recommendatsion_all_day == 'SELL' %}
+                            <td><span class="badge bg-danger">{{ el.recommendatsion_all_day }}</span></td>
+                            {% elif el.recommendatsion_all_day == 'STRONG_SELL' %}
+                            <td><span class="badge bg-danger">{{ el.recommendatsion_all_day }}</span></td>
+                            {% elif el.recommendatsion_all_day == 'STRONG_BUY' %}
+                            <td><span class="badge bg-primary">{{ el.recommendatsion_all_day }}</span></td>
+                            {% elif el.recommendatsion_all_day == 'NEUTRAL' %}
+                            <td><span class="badge bg-secondary">{{ el.recommendatsion_all_day }}</span></td>
+                            {% else %}
+                            <td><a target="_blank" rel="noopener noreferrer"
+                                   href="https://www.binance.com/ru/my/wallet/account/saving">Earn</a></td>
+                            {% endif %}
                         </tr>
                         {% endif %}
                         {% endfor %}

@@ -15,12 +15,12 @@ def trading_view_recommendation(coin):
     return recommend
 
 
-def trading_view_recommendation_all(coin):
+def trading_view_recommendation_all(coin, interval):
     tesla = TA_Handler(
         symbol=f"{coin}",
         screener="CRYPTO",
         exchange="BINANCE",
-        interval=Interval.INTERVAL_4_HOURS
+        interval=interval
     )
     recommend = tesla.get_analysis().summary.get('RECOMMENDATION')
     return recommend
@@ -62,7 +62,9 @@ def coin_shown_engine():
 
 
 def read_all_pairs():
-    all_pairs = all_tickers.query.order_by(-all_tickers.ticker).all()
+    all_pairs = all_tickers.query.order_by(all_tickers.recommendatsion_all_day, all_tickers.recommendatsion).filter(
+        all_tickers.recommendatsion_all_day =='STRONG_BUY').all()
+    print("ok")
     return all_pairs
 
 
@@ -73,17 +75,22 @@ def all_tradable_pairs(client):
     all_tickers.query.delete()
     count = 0
 
-    for ticker in tickers1[:7]:
+    for ticker in tickers1:
         bidPrice = float(ticker.get('bidPrice'))
         if bidPrice > 0:
             count += 1
             symbol = ticker.get('symbol')
             exists = db.session.query(all_tickers.id).filter_by(ticker=symbol).first() is not None
             if not exists:
-                recommendatsion_all = trading_view_recommendation_all(symbol)
-                admin2 = all_tickers(ticker=symbol, recommendatsion=recommendatsion_all)
-                db.session.add(admin2)
-                db.session.commit()
+                try:
+                    recommendatsion_all = trading_view_recommendation_all(symbol, Interval.INTERVAL_4_HOURS)
+                    recommendatsion_all_day = trading_view_recommendation_all(symbol, Interval.INTERVAL_1_DAY)
+                    admin2 = all_tickers(ticker=symbol, recommendatsion=recommendatsion_all,
+                                         recommendatsion_all_day=recommendatsion_all_day)
+                    db.session.add(admin2)
+                    db.session.commit()
+                except:
+                    pass
             else:
                 admin = all_tickers.query.filter_by(ticker=symbol).first()
                 admin.ticker = symbol
@@ -91,6 +98,6 @@ def all_tradable_pairs(client):
                 db.session.add(admin)
                 db.session.commit()
                 print('11111111')
-            print(count, symbol)
+            print(count, symbol, recommendatsion_all)
     # tt = time() - t0
     # print(tt)
