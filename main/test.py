@@ -1,14 +1,14 @@
 from tradingview_ta import TA_Handler, Interval
 
-tesla = TA_Handler(
-    symbol="ATOMUSDT",
-    screener="CRYPTO",
-    exchange="BINANCE",
-    interval=Interval.INTERVAL_1_DAY
-)
-# recommend = tesla.get_analysis().summary.get('RECOMMENDATION')
-recommend = tesla.get_analysis().summary
-print(recommend)
+# tesla = TA_Handler(
+#     symbol="ATOMUSDT",
+#     screener="CRYPTO",
+#     exchange="BINANCE",
+#     interval=Interval.INTERVAL_1_DAY
+# )
+# # recommend = tesla.get_analysis().summary.get('RECOMMENDATION')
+# recommend = tesla.get_analysis().summary
+# print(recommend)
 
 
 # ###############
@@ -59,3 +59,8 @@ print(recommend)
 #             print(number)
 #             return number
 # count_of_coins(Assets)
+from binance_info import client
+
+avg_price = client.get_avg_price(symbol='BTCUSDT')
+price = avg_price.get('price')
+print(price)

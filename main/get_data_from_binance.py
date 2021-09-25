@@ -24,6 +24,12 @@ def save_or_update_db():
         db.session.commit()
 
 
+def get_prices(symbol):
+    avg_price = client.get_avg_price(symbol=symbol)
+    price = avg_price.get('price')
+    print(price)
+
+
 def getting_data_from_binance():
     global locked, free, asset, total_usd, total_eur, price_e, recommendatsion, recommendatsion_d1
     if status.get("msg") == 'normal':

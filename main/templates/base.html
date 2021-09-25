@@ -11,7 +11,7 @@
     {% if title %}
     <title>{{ title }}</title>
     {% else %}
-    <title>Narva Haigla</title>
+    <title>Binance</title>
     {% endif %}
     {% endblock %}
 
@@ -41,9 +41,6 @@
 
 
 
-
-
-
     </style>
 
     <!-- Custom styles for this template -->
@@ -60,7 +57,8 @@
         </svg>
         <span class="fs-4">Binance</span>
         <br>
-        <p>     Всего у меня <b>{{ super_total_usd }}</b> USDT. Всего у меня <b>{{ super_total_eur }}</b> EUR.Всего у меня <b>{{ number }}</b> монет.</p>
+        <p> Всего у меня <b>{{ super_total_usd }}</b> USDT. Всего у меня <b>{{ super_total_eur }}</b> EUR.Всего у меня
+            <b>{{ number }}</b> монет.</p>
 
     </a>
 </header>
@@ -99,7 +97,28 @@
 </div>
 <br>
 
+{% macro reccomendatsion(rec) %}
+
+{% if rec == 'BUY' %}
+<td><span class="badge bg-success">{{ rec }}</span></td>
+{% elif rec == 'SELL' %}
+<td><span class="badge bg-danger">{{ rec }}</span></td>
+{% elif rec == 'STRONG_SELL' %}
+<td><span class="badge bg-danger">Активно продавать</span></td>
+{% elif rec == 'STRONG_BUY' %}
+<td><span class="badge bg-primary">{{ rec }}</span></td>
+{% elif rec == 'NEUTRAL' %}
+<td><span class="badge bg-secondary">{{ rec }}</span></td>
+{% elif rec == 'No info' %}
+<td><a target="_blank" rel="noopener noreferrer"
+       href="https://www.binance.com/ru/my/wallet/account/saving">Earn</a></td>
+{% endif %}
+
+{% endmacro %}
+
 {% block content %}
+
+
 {% endblock %}
 
 

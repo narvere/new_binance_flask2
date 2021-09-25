@@ -44,37 +44,13 @@
                 <td><a target="_blank" rel="noopener noreferrer"
                        href="https://www.binance.com/ru/trade/{{ el.asset }}_USDT?layout=basic"
                        class="btn btn-outline-warning">Binance</a></td>
+                {% block contentx %}
+
+                {% endblock %}
 
 
-                {% if el.recommendatsion == 'BUY' %}
-                <td><span class="badge bg-success">{{ el.recommendatsion }}</span></td>
-                {% elif el.recommendatsion == 'SELL' %}
-                <td><span class="badge bg-danger">{{ el.recommendatsion }}</span></td>
-                {% elif el.recommendatsion == 'STRONG_SELL' %}
-                <td><span class="badge bg-danger">Активно продавать</span></td>
-                {% elif el.recommendatsion == 'STRONG_BUY' %}
-                <td><span class="badge bg-primary">{{ el.recommendatsion }}</span></td>
-                {% elif el.recommendatsion == 'NEUTRAL' %}
-                <td><span class="badge bg-secondary">{{ el.recommendatsion }}</span></td>
-                {% elif el.recommendatsion == 'No info' %}
-                <td><a target="_blank" rel="noopener noreferrer"
-                       href="https://www.binance.com/ru/my/wallet/account/saving">Earn</a></td>
-                {% endif %}
-
-                {% if el.recommendatsion_d1 == 'BUY' %}
-                <td><span class="badge bg-success">{{ el.recommendatsion_d1 }}</span></td>
-                {% elif el.recommendatsion_d1 == 'SELL' %}
-                <td><span class="badge bg-danger">{{ el.recommendatsion_d1 }}</span></td>
-                {% elif el.recommendatsion_d1 == 'STRONG_SELL' %}
-                <td><span class="badge bg-danger">Активно продавать</span></td>
-                {% elif el.recommendatsion_d1 == 'STRONG_BUY' %}
-                <td><span class="badge bg-primary">{{ el.recommendatsion_d1 }}</span></td>
-                {% elif el.recommendatsion_d1 == 'NEUTRAL' %}
-                <td><span class="badge bg-secondary">{{ el.recommendatsion_d1 }}</span></td>
-                {% elif el.recommendatsion_d1 == 'No info' %}
-                <td><a target="_blank" rel="noopener noreferrer"
-                       href="https://www.binance.com/ru/my/wallet/account/saving">Earn</a></td>
-                {% endif %}
+                {{ reccomendatsion(el.recommendatsion) }}
+                {{ reccomendatsion(el.recommendatsion_d1) }}
 
                 {% endfor %}
             </tbody>
