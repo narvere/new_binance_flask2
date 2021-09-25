@@ -1,7 +1,7 @@
 from binance_info import status, balances, client
 from dbs import db, Assets
 from funcs import trading_view_recommendation
-from tradingview_ta import TA_Handler, Interval
+from tradingview_ta import Interval
 
 
 def save_or_update_db():
@@ -36,6 +36,7 @@ def getting_data_from_binance():
                 asset = str(balance.get("asset"))
                 if asset != 'USDT' and asset != 'BETH':
                     try:
+                        print(asset)
                         recommendatsion = trading_view_recommendation(asset, Interval.INTERVAL_4_HOURS)
                         recommendatsion_d1 = trading_view_recommendation(asset, Interval.INTERVAL_1_DAY)
                         avg_price_usd = client.get_avg_price(symbol=f'{asset}USDT')

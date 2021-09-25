@@ -23,7 +23,7 @@ Usdt_tickers = Table(
     Column('id', Integer, primary_key=True),
     Column('ticker', String(20), nullable=False, unique=True),
 )
-## Если надо загрузить данные с сервера снимаю коммент и отключаю main()
+# Если надо загрузить данные с сервера снимаю коммент и отключаю main()
 # meta.create_all(engine)
 
 arr = []
@@ -57,17 +57,16 @@ async def one_ticker_info(client):
     print(111)
     # delete_symbol = Binance_tickers.delete()
     # conn.execute(delete_symbol)
-    count = 0
     tisks = Binance_tickers.select().where(Binance_tickers.c.id > 0)
     result = conn.execute(tisks)
     for symbol1 in result:
         info1 = await client.get_symbol_info(symbol1[1])
         symbol = info1.get('symbol')
-        baseAsset = info1.get('baseAsset')
-        quoteAsset = info1.get('quoteAsset')
+        base_asset = info1.get('base_asset')
+        quote_asset = info1.get('quote_asset')
         permissions = info1.get('permissions')
-        if 'SPOT' in permissions and quoteAsset == 'USDT':
-            print(time(), symbol, baseAsset, quoteAsset, permissions)
+        if 'SPOT' in permissions and quote_asset == 'USDT':
+            print(time(), symbol, base_asset, quote_asset, permissions)
             add_symbol = Binance_tickers.insert().values(ticker=symbol)
             # update_symbol = tickers.update().values(ticker=symbol)
             conn.execute(add_symbol)
@@ -80,8 +79,8 @@ async def all_usdt_pairs(client):
     counts = 0
     for key3 in assets:
         symbol = key3.get('symbol')
-        quoteAsset = key3.get('quoteAsset')
-        if quoteAsset == "USDT":
+        quote_asset = key3.get('quote_asset')
+        if quote_asset == "USDT":
             # print(symbol)
             counts += 1
             return symbol
@@ -94,8 +93,8 @@ async def all_tradable_pairs(client):
     # conn.execute(delete_symbol)
     count = 0
     for ticker in tickers1:
-        bidPrice = float(ticker.get('bidPrice'))
-        if bidPrice > 0:
+        bid_price = float(ticker.get('bid_price'))
+        if bid_price > 0:
             count += 1
             symbol = ticker.get('symbol')
             add_symbol = Binance_tickers.insert().values(ticker=symbol)
@@ -136,17 +135,17 @@ async def my_last_trades(asset, client, cur):
     trades = await client.get_my_trades(symbol=asset + cur)
     print(f"My {asset} trades:")
     for trade in trades[:3]:
-        time = int(trade.get('time')) / 1000
-        t = datetime.utcfromtimestamp(time).strftime('%Y-%m-%d %H:%M:%S')
+        time_last_trades = int(trade.get('time')) / 1000
+        t = datetime.utcfromtimestamp(time_last_trades).strftime('%Y-%m-%d %H:%M:%S')
         symbol = trade.get('symbol')
         price = trade.get('price')
         qty = trade.get('qty')
-        quoteQty = trade.get('quoteQty')
+        quote_qty = trade.get('quote_qty')
         commission = trade.get('commission')
-        commissionAsset = trade.get('commissionAsset')
-        print(f"time: {t}, symbol: {symbol}, price: {price},"
-              f"qty: {qty}, quoteQty {quoteQty}, commis: {commission}, "
-              f"commisAsset: {commissionAsset}")
+        commission_asset = trade.get('commission_asset')
+        print(f"time_last_trades: {t}, symbol: {symbol}, price: {price},"
+              f"qty: {qty}, quote_qty {quote_qty}, commis: {commission}, "
+              f"commisAsset: {commission_asset}")
 
 
 if __name__ == "__main__":
@@ -156,4 +155,4 @@ if __name__ == "__main__":
     tt = time() - t0
     print(tt)
 
-#104s
+

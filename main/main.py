@@ -1,8 +1,8 @@
 import pytz
 from flask import render_template
 from get_data_from_binance import getting_data_from_binance
-from dbs import all_tickers, app
-from funcs import read_all_pairs, coin_shown_engine, count_of_coins, trading_view_recommendation, all_tradable_pairs
+from dbs import AllTickers, app
+from funcs import read_all_pairs, coin_shown_engine, count_of_coins, all_tradable_pairs
 from binance_info import client
 
 # pip install flask[async]
@@ -17,7 +17,7 @@ zone_ee = pytz.timezone('Europe/Tallinn')
 def base():
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     print(my_assets)
-    tickers_number = count_of_coins(all_tickers)
+    tickers_number = count_of_coins(AllTickers)
     return render_template('index.html', my_assets=my_assets, super_total_usd=super_total_usd,
                            super_total_eur=super_total_eur, number=number, tickers_number=tickers_number)
 
@@ -25,7 +25,7 @@ def base():
 @app.route('/my_coins/', methods=['POST', 'GET'])
 def my_coins():
     getting_data_from_binance()
-    tickers_number = count_of_coins(all_tickers)
+    tickers_number = count_of_coins(AllTickers)
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     print(my_assets)
     return render_template('index.html', my_assets=my_assets, super_total_usd=super_total_usd,
@@ -41,9 +41,9 @@ async def all_pairs():
 @app.route('/get_all_pairs/', methods=['POST', 'GET'])
 async def get_all_pairs():
     all_tradable_pairs(client)
-    all_pairs = read_all_pairs()
+    all_pairs_get = read_all_pairs()
 
-    return render_template('all_pairs.html', all_pairs=all_pairs)
+    return render_template('all_pairs.html', all_pairs=all_pairs_get)
 
 
 @app.route('/all_usdt/', methods=['POST', 'GET'])

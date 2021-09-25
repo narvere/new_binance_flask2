@@ -62,7 +62,7 @@ class Orders(db.Model):
         return '<Orders %r>' % self.symbol
 
 
-class all_tickers(db.Model):
+class AllTickers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticker = db.Column(db.String(20), nullable=False, unique=True)
     recommendatsion = db.Column(db.String(50), nullable=True)
@@ -72,7 +72,7 @@ class all_tickers(db.Model):
         return '<Ticker %r>' % self.ticker
 
 
-class usdt_tickers(db.Model):
+class UsdtTickers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticker = db.Column(db.String(20), nullable=False, unique=True)
 

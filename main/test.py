@@ -1,4 +1,4 @@
-from tradingview_ta import TA_Handler, Interval, Exchange
+from tradingview_ta import TA_Handler, Interval
 
 tesla = TA_Handler(
     symbol="ATOMUSDT",
@@ -38,24 +38,24 @@ print(recommend)
 
 
 # def count_of_coins(xxx):
-    # numbers = db.session.query(db.func.count(xxx.id)).filter(recommendatsion='BUY')
-    # .query.filter_by(username='peter').first()
-    # print(numbers)
+#     numbers = db.session.query(db.func.count(xxx.id)).filter(recommendatsion='BUY')
+#     .query.filter_by(username='peter').first()
+#     print(numbers)
+#
+#     qry = (db.session.query(db.func.count(xxx.id))
+#            .filter(xxx.recommendatsion.like("BUY")))
+#
+#     qry = select([func.count(xxx.id)],
+#                  and_(xxx.company == 31,
+#                       xxx.date.like('2010-05%')
+#                       ))
 
-    # qry = (db.session.query(db.func.count(xxx.id))
-    #        .filter(xxx.recommendatsion.like("BUY")))
 
-    # qry = select([func.count(xxx.id)],
-    #              and_(xxx.company == 31,
-    #                   xxx.date.like('2010-05%')
-    #                   ))
-
-
-    # peter = xxx.query.filter_by.count(recommendatsion='BUY')
-    # print(qry)
-
-    # for nr in numbers:
-    #     for number in nr:
-    #         print(number)
-    #         return number
+#     peter = xxx.query.filter_by.count(recommendatsion='BUY')
+#     print(qry)
+#
+#     for nr in numbers:
+#         for number in nr:
+#             print(number)
+#             return number
 # count_of_coins(Assets)
