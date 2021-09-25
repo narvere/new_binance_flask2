@@ -1,9 +1,7 @@
 import pytz
 from flask import render_template
-from get_data_from_binance import getting_data_from_binance
-from dbs import AllTickers, app
-from funcs import read_all_pairs, coin_shown_engine, count_of_coins, all_tradable_pairs
-from binance_info import client
+from dbs import app
+
 from routes import base, my_coins, all_pairs, get_all_pairs, all_usdt, coin
 
 # pip install flask[async]

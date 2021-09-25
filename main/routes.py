@@ -1,4 +1,3 @@
-import pytz
 from flask import render_template
 from get_data_from_binance import getting_data_from_binance
 from dbs import AllTickers, app
