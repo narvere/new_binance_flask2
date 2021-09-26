@@ -64,3 +64,35 @@ from binance_info import client
 avg_price = client.get_avg_price(symbol='BTCUSDT')
 price = avg_price.get('price')
 print(price)
+
+
+# orders = client.get_open_orders()
+# for item in orders:
+#     symbol = item.get("symbol")
+#     price = item.get("price")
+#     origQty = item.get("origQty")
+#     side = item.get("side")
+#     order_type = item.get("type")
+#     stopPrice = item.get("stopPrice")
+#     time = item.get("time")
+#     print(symbol)
+
+
+# tickers1 = client.get_orderbook_tickers()
+# for item in tickers1[:3]:
+#     print(item)
+
+
+# info = client.get_exchange_info()
+# for item in info.get('symbols'):
+#     symbol = item.get("symbol")
+#     baseAsset = item.get("baseAsset")
+#     quoteAsset = item.get("quoteAsset")
+#     orderTypes = item.get("orderTypes")
+#     permissions = item.get("permissions")
+
+# from dbs import PairsInfo, Assets, db, AllTickers, app
+# with app.app_context():
+#     all_pairs = db.session.query(PairsInfo).filter(
+#             PairsInfo.baseAsset.in_(['AAVE'])).order_by(PairsInfo.symbol).all()
+#     print(all_pairs)

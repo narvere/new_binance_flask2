@@ -23,6 +23,27 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
+class PairsInfo(db.Model):
+    __tablename__ = 'pairsinfo'
+    id = db.Column(db.Integer, primary_key=True)
+    symbol = db.Column(db.String(50), nullable=False)
+    baseAsset = db.Column(db.String(50), unique=False, nullable=True)
+    quoteAsset = db.Column(db.String(50), unique=False, nullable=True)
+    orderTypes = db.Column(db.String(500), unique=False, nullable=True)
+    permissions = db.Column(db.String(500), unique=False, nullable=True)
+    test = db.Column(db.String(500), unique=False, nullable=True)
+
+    def __init__(self, symbol, baseAsset, quoteAsset, orderTypes, permissions):
+        self.symbol = symbol
+        self.baseAsset = baseAsset
+        self.quoteAsset = quoteAsset
+        self.orderTypes = orderTypes
+        self.permissions = permissions
+
+    def __repr__(self):
+        return '<symbol %r>' % self.symbol
+
+
 class Assets(db.Model):
     __tablename__ = 'assets'
     id = db.Column(db.Integer, primary_key=True)

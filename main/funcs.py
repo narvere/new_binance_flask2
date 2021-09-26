@@ -1,7 +1,9 @@
-from dbs import AllTickers
-from dbs import Assets, db
+from dbs import AllTickers, Assets, db
 from time import time
 from tradingview_ta import TA_Handler, Interval
+
+
+
 
 
 def trading_view_recommendation(coin, interval):
@@ -53,7 +55,7 @@ def coin_shown_engine():
     try:
         super_total_usd = round(super_total_usd, 2)
         super_total_eur = round(super_total_eur, 2)
-    except IndexError:
+    except:
         pass
     number = count_of_coins(Assets)
     tt = t0 - time()
@@ -61,10 +63,16 @@ def coin_shown_engine():
     return my_assets, number, super_total_eur, super_total_usd
 
 
+
+
+
 def read_all_pairs():
+
     # all_pairs = AllTickers.query.order_by(AllTickers.recommendatsion_all_day, AllTickers.recommendatsion).filter(
-    #     AllTickers.recommendatsion_all_day == 'BUY').all()
-    all_pairs = AllTickers.query.order_by(AllTickers.recommendatsion_all_day, AllTickers.recommendatsion).all()
+    #     AllTickers.recommendatsion_all_day == 'BUY', AllTickers.recommendatsion_all_day == 'STRONG_BUY').all()
+    all_pairs = db.session.query(AllTickers).filter(
+        AllTickers.recommendatsion_all_day.in_(['STRONG_BUY', 'BUY'])).order_by(AllTickers.recommendatsion_all_day,
+                                                                                AllTickers.recommendatsion).all()
     print("ok")
     return all_pairs
 

@@ -31,21 +31,28 @@
 
 
             {% for el in my_assets%}
-                {% if el.asset == coin_name %}
-                    <tr>
-                        <th scope="row">{{loop.index}}</th>
-                        <td>{{el.asset}}</td>
-                        <td>{{el.free}}</td>
-                        <td>{{el.locked}}</td>
-                        <td>$ {{el.total_usd}}</td>
-                        <td>€ {{el.total_eur}}</td>
-                        <td><button type="button" class="btn btn-light">Light</button></td>
-                    </tr>
-                {% endif %}
+            {% if el.asset == coin_name %}
+            <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td>{{el.asset}}</td>
+                <td>{{el.free}}</td>
+                <td>{{el.locked}}</td>
+                <td>$ {{el.total_usd}}</td>
+                <td>€ {{el.total_eur}}</td>
+                <td>
+                    <button type="button" class="btn btn-light">Light</button>
+                </td>
+            </tr>
+            {% endif %}
             {% endfor %}
             </tbody>
         </table>
-        <p>{{ coin_name }}</p>
+        <p>{% for i in ticker_i %}
+            {% print(i.symbol, price) %}
+            <br>
+            {% endfor %}
+
+        </p>
         <br>
     </main>
     <footer class="pt-5 my-5 text-muted border-top">

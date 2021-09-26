@@ -1,7 +1,26 @@
-from binance_info import status, balances, client
-from dbs import db, Assets
+from binance_info import status, balances, client, exchange_info
+from dbs import db, Assets, PairsInfo
 from funcs import trading_view_recommendation
 from tradingview_ta import Interval
+
+
+def a_price(symbol):
+    avg_price = client.get_avg_price(symbol=symbol)
+    price = avg_price.get('price')
+    return price
+
+
+def pairs_info_from_binance():
+    for item in exchange_info.get('symbols'):
+        symbol = str(item.get("symbol"))
+        baseAsset = str(item.get("baseAsset"))
+        quoteAsset = str(item.get("quoteAsset"))
+        orderTypes = str(item.get("orderTypes"))
+        permissions = str(item.get("permissions"))
+        pairs_info = PairsInfo(symbol=symbol, baseAsset=baseAsset, quoteAsset=quoteAsset, orderTypes=orderTypes,
+                               permissions=permissions)
+        db.session.add(pairs_info)
+        db.session.commit()
 
 
 def save_or_update_db():
