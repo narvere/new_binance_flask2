@@ -2,6 +2,24 @@ from binance_info import status, balances, client, exchange_info
 from dbs import db, Assets, PairsInfo
 from funcs import trading_view_recommendation
 from tradingview_ta import Interval
+from datetime import datetime
+
+
+def my_last_trades(asset):
+    trades = client.get_my_trades(symbol=asset)
+    print(f"My {asset} trades:")
+    for trade in trades[:3]:
+        time_last_trades = int(trade.get('time')) / 1000
+        t = datetime.utcfromtimestamp(time_last_trades).strftime('%Y-%m-%d %H:%M:%S')
+        symbol = trade.get('symbol')
+        price = trade.get('price')
+        qty = trade.get('qty')
+        quote_qty = trade.get('quote_qty')
+        commission = trade.get('commission')
+        commission_asset = trade.get('commission_asset')
+        print(f"time_last_trades: {t}, symbol: {symbol}, price: {price},"
+              f"qty: {qty}, quote_qty {quote_qty}, commis: {commission}, "
+              f"commisAsset: {commission_asset}")
 
 
 def a_price(symbol):
@@ -11,14 +29,17 @@ def a_price(symbol):
 
 
 def pairs_info_from_binance():
+    PairsInfo.query.delete()
     for item in exchange_info.get('symbols'):
         symbol = str(item.get("symbol"))
         baseAsset = str(item.get("baseAsset"))
         quoteAsset = str(item.get("quoteAsset"))
         orderTypes = str(item.get("orderTypes"))
         permissions = str(item.get("permissions"))
+        price = a_price(symbol)
+        print(symbol, price)
         pairs_info = PairsInfo(symbol=symbol, baseAsset=baseAsset, quoteAsset=quoteAsset, orderTypes=orderTypes,
-                               permissions=permissions)
+                               permissions=permissions, test=price)
         db.session.add(pairs_info)
         db.session.commit()
 

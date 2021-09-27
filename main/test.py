@@ -59,11 +59,11 @@ from tradingview_ta import TA_Handler, Interval
 #             print(number)
 #             return number
 # count_of_coins(Assets)
-from binance_info import client
-
-avg_price = client.get_avg_price(symbol='BTCUSDT')
-price = avg_price.get('price')
-print(price)
+# from binance_info import client
+#
+# avg_price = client.get_avg_price(symbol='BTCUSDT')
+# price = avg_price.get('price')
+# print(price)
 
 
 # orders = client.get_open_orders()
@@ -96,3 +96,14 @@ print(price)
 #     all_pairs = db.session.query(PairsInfo).filter(
 #             PairsInfo.baseAsset.in_(['AAVE'])).order_by(PairsInfo.symbol).all()
 #     print(all_pairs)
+
+
+from get_data_from_binance import my_last_trades
+import asyncio
+
+
+async def mail():
+    await my_last_trades("MBOXUSDT")
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(mail())

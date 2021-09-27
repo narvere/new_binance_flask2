@@ -1,5 +1,5 @@
 from flask import render_template, request
-from get_data_from_binance import getting_data_from_binance, pairs_info_from_binance, a_price
+from get_data_from_binance import getting_data_from_binance, pairs_info_from_binance, my_last_trades
 from dbs import AllTickers, app, PairsInfo, db
 from funcs import read_all_pairs, coin_shown_engine, count_of_coins, all_tradable_pairs
 from binance_info import client
@@ -24,9 +24,16 @@ def ticker_info(ticker):
 # @app.route('/coin/<coin_name>/')
 def coin(coin_name):
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
-    ticker_i = str(ticker_info(coin_name))
-    price = a_price(ticker_i)
-    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i, price=price)
+    ticker_i = ticker_info(coin_name)
+    my_last_trades("MBOXUSDT")
+    # for i in ticker_i:
+    #     # print(i.symbol)
+    #     price = a_price(i.symbol)
+    #     pairs_info = PairsInfo(symbol=i.symbol, test=price)
+    #     db.session.add(pairs_info)
+    #     db.session.commit()
+
+    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i)
 
     return render_template('my_coin.html', **template_context)
 
