@@ -23,6 +23,31 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
+class DbsUpdateTime(db.Model):
+    __tablename__ = 'dbupdatetime'
+    id = db.Column(db.Integer, primary_key=True)
+    assets_table_time_upd = db.Column(db.String(50), unique=False, nullable=False)
+
+    def __repr__(self):
+        return '<symbol %r>' % self.assets_table_time_upd
+
+class AllTickersUpdateTime(db.Model):
+    __tablename__ = 'alltickerupdatetime'
+    id = db.Column(db.Integer, primary_key=True)
+    alltickers_table_time_upd = db.Column(db.String(50), unique=False, nullable=False)
+
+    def __repr__(self):
+        return '<symbol %r>' % self.alltickers_table_time_upd
+
+class TickersInfoUpdateTime(db.Model):
+    __tablename__ = 'tickerinfoupdatetime'
+    id = db.Column(db.Integer, primary_key=True)
+    tickers_info_table_time_upd = db.Column(db.String(50), unique=False, nullable=False)
+
+    def __repr__(self):
+        return '<time %r>' % self.tickers_info_table_time_upd
+
+
 class MyTrades(db.Model):
     __tablename__ = 'my_trades'
     id = db.Column(db.Integer, primary_key=True)
@@ -70,8 +95,9 @@ class Assets(db.Model):
     total_eur = db.Column(db.Float, unique=False, nullable=True)
     recommendatsion = db.Column(db.String(50), nullable=True)
     recommendatsion_d1 = db.Column(db.String(50), nullable=True)
+    price = db.Column(db.Float, unique=False, nullable=True)
 
-    def __init__(self, asset, free, locked, total_usd, total_eur, recommendatsion, recommendatsion_d1):
+    def __init__(self, asset, free, locked, total_usd, total_eur, recommendatsion, recommendatsion_d1, price):
         self.asset = asset
         self.free = free
         self.locked = locked
@@ -79,6 +105,7 @@ class Assets(db.Model):
         self.total_eur = total_eur
         self.recommendatsion = recommendatsion
         self.recommendatsion_d1 = recommendatsion_d1
+        self.price = price
 
     def __repr__(self):
         return '<Assets %r>' % self.asset
@@ -104,6 +131,11 @@ class AllTickers(db.Model):
     ticker = db.Column(db.String(20), nullable=False, unique=True)
     recommendatsion = db.Column(db.String(50), nullable=True)
     recommendatsion_all_day = db.Column(db.String(50), nullable=True)
+
+    def __init__(self, ticker, recommendatsion, recommendatsion_all_day):
+        self.ticker = ticker
+        self.recommendatsion = recommendatsion
+        self.recommendatsion_all_day = recommendatsion_all_day
 
     def __repr__(self):
         return '<Ticker %r>' % self.ticker

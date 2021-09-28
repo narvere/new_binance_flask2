@@ -1,9 +1,12 @@
 from dbs import AllTickers, Assets, db
 from time import time
 from tradingview_ta import TA_Handler, Interval
+from datetime import datetime
 
 
-
+def db_updating_time():
+    time1 = datetime.now().strftime("%d/%m/%y %H:%M")
+    return time1
 
 
 def trading_view_recommendation(coin, interval):
@@ -63,11 +66,7 @@ def coin_shown_engine():
     return my_assets, number, super_total_eur, super_total_usd
 
 
-
-
-
 def read_all_pairs():
-
     # all_pairs = AllTickers.query.order_by(AllTickers.recommendatsion_all_day, AllTickers.recommendatsion).filter(
     #     AllTickers.recommendatsion_all_day == 'BUY', AllTickers.recommendatsion_all_day == 'STRONG_BUY').all()
     all_pairs = db.session.query(AllTickers).filter(
@@ -79,9 +78,9 @@ def read_all_pairs():
 
 def all_tradable_pairs(client):
     # t0 = time()
-    global recommendatsion_all
+    global recommendatsion, recommendatsion_all_day
     tickers1 = client.get_orderbook_tickers()
-    AllTickers.query.delete()
+    # AllTickers.query.delete()
     count = 0
 
     for ticker in tickers1:
@@ -89,24 +88,25 @@ def all_tradable_pairs(client):
         if bid_price > 0:
             count += 1
             symbol = ticker.get('symbol')
+            try:
+                recommendatsion = trading_view_recommendation_all(symbol, Interval.INTERVAL_4_HOURS)
+                recommendatsion_all_day = trading_view_recommendation_all(symbol, Interval.INTERVAL_1_DAY)
+            except:
+                pass
             exists = db.session.query(AllTickers.id).filter_by(ticker=symbol).first() is not None
             if not exists:
-                try:
-                    recommendatsion_all = trading_view_recommendation_all(symbol, Interval.INTERVAL_4_HOURS)
-                    recommendatsion_all_day = trading_view_recommendation_all(symbol, Interval.INTERVAL_1_DAY)
-                    admin2 = AllTickers(ticker=symbol, recommendatsion=recommendatsion_all,
-                                        recommendatsion_all_day=recommendatsion_all_day)
-                    db.session.add(admin2)
-                    db.session.commit()
-                except:
-                    pass
+                admin2 = AllTickers(ticker=symbol, recommendatsion=recommendatsion,
+                                    recommendatsion_all_day=recommendatsion_all_day)
+                db.session.add(admin2)
+                db.session.commit()
             else:
                 admin = AllTickers.query.filter_by(ticker=symbol).first()
                 admin.ticker = symbol
-                # admin.recommendatsion_all = trading_view_recommendation_all(symbol)
+                admin.recommendatsion = recommendatsion
+                admin.recommendatsion_all_day = recommendatsion_all_day
                 db.session.add(admin)
                 db.session.commit()
                 print('11111111')
-            print(count, symbol, recommendatsion_all)
+            print(count, symbol, recommendatsion)
     # tt = time() - t0
     # print(tt)

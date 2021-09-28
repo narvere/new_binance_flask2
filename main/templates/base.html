@@ -58,8 +58,8 @@
         </svg>
         <span class="fs-4">Binance</span>
         <br>
-        <p> Всего у меня <b>{{ super_total_usd }}</b> USDT. Всего у меня <b>{{ super_total_eur }}</b> EUR.Всего у меня
-            <b>{{ number }}</b> монет.</p>
+        <p> Всего у меня <b>{{ super_total_usd }}</b> USDT. Всего у меня <b>{{ super_total_eur }}</b> EUR. Всего у меня
+            <b>{{ number }}</b> монет. <p> Всего на бирже <b>{{ tickers_number }}</b> торговых пар.</p>
 
     </a>
 </header>
@@ -76,6 +76,9 @@
                 <button type="submit" class="btn btn-primary">Посмотреть мои монеты</button>
             </form>
             <br>
+            {% for el in times %}
+            <p>Last update: {{ el.assets_table_time_upd }}</p>
+            {% endfor %}
 
         </div>
         <div class="col">
@@ -87,7 +90,10 @@
                 <button type="submit" class="btn btn-primary">Посмотреть все пары</button>
             </form>
             <br>
-            <p>Всего на бирже <b>{{ tickers_number }}</b> торговых пар.</p>
+            {% for el in times_all %}
+            <p>Last update: {{ el.alltickers_table_time_upd }}</p>
+            {% endfor %}
+
         </div>
         <div class="col">
             <form action="{{ url_for('all_usdt') }}">
@@ -95,8 +101,12 @@
             </form>
             <br>
             <form action="{{ url_for('info_tickers') }}">
-                <button type="submit" class="btn btn-danger">Загрузить инфу у тикерах</button>
+                <button type="submit" class="btn btn-danger">Загрузить инфу о тикерах</button>
             </form>
+            <br>
+            {% for el in times_a %}
+            <p>Last update: {{ el.tickers_info_table_time_upd }}</p>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -111,7 +121,7 @@
 {% elif rec == 'STRONG_SELL' %}
 <td><span class="badge bg-danger">Активно продавать</span></td>
 {% elif rec == 'STRONG_BUY' %}
-<td><span class="badge bg-primary">{{ rec }}</span></td>
+<td><span class="badge bg-primary">Активно покупать</span></td>
 {% elif rec == 'NEUTRAL' %}
 <td><span class="badge bg-secondary">{{ rec }}</span></td>
 {% elif rec == 'No info' %}

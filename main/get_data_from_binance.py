@@ -1,13 +1,13 @@
 from binance_info import status, balances, client, exchange_info
 from dbs import db, Assets, PairsInfo
-from funcs import trading_view_recommendation
+from funcs import trading_view_recommendation, db_updating_time
 from tradingview_ta import Interval
 from datetime import datetime
 
 
-def my_last_trades(asset):
-    trades = client.get_my_trades(symbol=asset)
-    print(f"My {asset} trades:")
+def my_last_trades(asset1):
+    trades = client.get_my_trades(symbol=asset1)
+    print(f"My {asset1} trades:")
     for trade in trades[:3]:
         time_last_trades = int(trade.get('time')) / 1000
         t = datetime.utcfromtimestamp(time_last_trades).strftime('%Y-%m-%d %H:%M:%S')
@@ -29,7 +29,6 @@ def a_price(symbol):
 
 
 def pairs_info_from_binance():
-    PairsInfo.query.delete()
     for item in exchange_info.get('symbols'):
         symbol = str(item.get("symbol"))
         baseAsset = str(item.get("baseAsset"))
@@ -38,27 +37,41 @@ def pairs_info_from_binance():
         permissions = str(item.get("permissions"))
         price = a_price(symbol)
         print(symbol, price)
-        pairs_info = PairsInfo(symbol=symbol, baseAsset=baseAsset, quoteAsset=quoteAsset, orderTypes=orderTypes,
-                               permissions=permissions, test=price)
-        db.session.add(pairs_info)
-        db.session.commit()
+        exists = db.session.query(PairsInfo.id).filter_by(symbol=symbol).first() is not None
+        if not exists:
+            pairs_info = PairsInfo(symbol=symbol, baseAsset=baseAsset, quoteAsset=quoteAsset, orderTypes=orderTypes,
+                                   permissions=permissions, test=price)
+            db.session.add(pairs_info)
+            db.session.commit()
+        else:
+            admin = PairsInfo.query.filter_by(symbol=symbol).first()
+            admin.baseAsset = baseAsset
+            admin.quoteAsset = quoteAsset
+            admin.orderTypes = orderTypes
+            admin.permissions = permissions
+            admin.test = price
+            db.session.add(admin)
+            db.session.commit()
 
 
 def save_or_update_db():
     exists = db.session.query(Assets.id).filter_by(asset=asset).first() is not None
     if not exists:
+        # добавление данных в пустую таблицу
         admin = Assets(asset=asset, free=free, locked=locked, total_usd=total_usd, total_eur=total_eur,
-                       recommendatsion=recommendatsion, recommendatsion_d1=recommendatsion_d1)
-
+                       recommendatsion=recommendatsion, recommendatsion_d1=recommendatsion_d1, price=price)
         db.session.add(admin)
         db.session.commit()
+
     else:
+        # обновление данных
         admin = Assets.query.filter_by(asset=asset).first()
         admin.free = free
         admin.locked = locked
         admin.total_usd = total_usd
         admin.total_eur = total_eur
         admin.recommendatsion = recommendatsion
+        admin.price = price
 
         db.session.add(admin)
         db.session.commit()
@@ -71,9 +84,8 @@ def get_prices(symbol):
 
 
 def getting_data_from_binance():
-    global locked, free, asset, total_usd, total_eur, price_e, recommendatsion, recommendatsion_d1
+    global locked, free, asset, total_usd, total_eur, price_e, recommendatsion, recommendatsion_d1, price
     if status.get("msg") == 'normal':
-        Assets.query.delete()
         super_total = 0
         for balance in balances:
             locked = float(balance.get("locked"))
@@ -85,6 +97,7 @@ def getting_data_from_binance():
                         print(asset)
                         recommendatsion = trading_view_recommendation(asset, Interval.INTERVAL_4_HOURS)
                         recommendatsion_d1 = trading_view_recommendation(asset, Interval.INTERVAL_1_DAY)
+
                         avg_price_usd = client.get_avg_price(symbol=f'{asset}USDT')
                         price_eur = client.get_avg_price(symbol=f'EURUSDT')
                         price_e = round(float(price_eur.get("price")), 5)
@@ -106,11 +119,8 @@ def getting_data_from_binance():
                 total_usd = round(total_usd, 2)
                 # print(asset, free, locked, total_usd, total_eur)
                 save_or_update_db()
-        # super_total_usd = round(super_total, 2)
-        # super_total_eur = round((super_total_usd / price_e), 2)
-        # getting_orders()
-        # save_or_update_order_db()
-        return
+        time_1 = db_updating_time()
+        return time_1
     else:
         print("Binance is down")
 

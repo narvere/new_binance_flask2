@@ -36,10 +36,10 @@ app.add_url_rule('/info_tickers/', 'info_tickers', info_tickers, methods=['POST'
 
 @app.route('/test/')
 def test():
-    all_pairs = db.session.query(AllTickers).filter(
+    all_pairs1 = db.session.query(AllTickers).filter(
         AllTickers.recommendatsion_all_day.in_(['STRONG_BUY', 'BUY'])).order_by(AllTickers.recommendatsion_all_day,
                                                                                 AllTickers.recommendatsion).all()
-    return render_template('test.html', all_pairs=all_pairs)
+    return render_template('test.html', all_pairs=all_pairs1)
 
 
 if __name__ == '__main__':

@@ -14,7 +14,8 @@
                 <th scope="col">#</th>
                 <th scope="col">Актив</th>
                 <th scope="col">Количество монет</th>
-                <th scope="col">Заблокированная сумма</th>
+                <th scope="col">Sell order</th>
+                <th scope="col">Текущая цена</th>
                 <th scope="col">USDT</th>
                 <th scope="col">EUR</th>
                 <th scope="col">TradingView</th>
@@ -33,6 +34,7 @@
                 <td><a href="/coin/{{ el.asset }}">{{el.asset}}</a></td>
                 <td>{{el.free}}</td>
                 <td>{{el.locked}}</td>
+                <td>{{el.price}}</td>
                 <td>$ {{el.total_usd}}</td>
                 <td>€ {{el.total_eur}}</td>
                 <td><a target="_blank" rel="noopener noreferrer"
