@@ -23,6 +23,30 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
+class myTrades(db.Model):
+    __tablename__ = 'mytrades'
+    id = db.Column(db.Integer, primary_key=True)
+    symbol = db.Column(db.String(50), unique=True, nullable=False)
+    time_last_trades = db.Column(db.String(50), unique=False, nullable=True)
+    price = db.Column(db.Float, unique=False, nullable=True)
+    qty = db.Column(db.Float, unique=False, nullable=True)
+    quote_qty = db.Column(db.Float, unique=False, nullable=True)
+    commis = db.Column(db.Float, unique=False, nullable=True)
+    commisAsset = db.Column(db.String(20), unique=False, nullable=True)
+
+    def __init__(self, symbol, time_last_trades, price, qty, quote_qty, commis, commisAsset):
+        self.symbol = symbol
+        self.time_last_trades = time_last_trades
+        self.price = price
+        self.qty = qty
+        self.quote_qty = quote_qty
+        self.commis = commis
+        self.commisAsset = commisAsset
+
+    def __repr__(self):
+        return '<symbol %r>' % self.symbol
+
+
 class DbsUpdateTime(db.Model):
     __tablename__ = 'dbupdatetime'
     id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +55,7 @@ class DbsUpdateTime(db.Model):
     def __repr__(self):
         return '<symbol %r>' % self.assets_table_time_upd
 
+
 class AllTickersUpdateTime(db.Model):
     __tablename__ = 'alltickerupdatetime'
     id = db.Column(db.Integer, primary_key=True)
@@ -38,6 +63,7 @@ class AllTickersUpdateTime(db.Model):
 
     def __repr__(self):
         return '<symbol %r>' % self.alltickers_table_time_upd
+
 
 class TickersInfoUpdateTime(db.Model):
     __tablename__ = 'tickerinfoupdatetime'

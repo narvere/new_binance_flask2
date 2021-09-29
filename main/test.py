@@ -102,8 +102,7 @@ from get_data_from_binance import my_last_trades
 import asyncio
 
 
-async def mail():
-    await my_last_trades("MBOXUSDT")
+def mail():
+    my_last_trades("MBOXUSDT")
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(mail())
+mail()

@@ -8,18 +8,20 @@ from datetime import datetime
 def my_last_trades(asset1):
     trades = client.get_my_trades(symbol=asset1)
     print(f"My {asset1} trades:")
-    for trade in trades[:3]:
-        time_last_trades = int(trade.get('time')) / 1000
-        t = datetime.utcfromtimestamp(time_last_trades).strftime('%Y-%m-%d %H:%M:%S')
+    print(trades)
+    for trade in trades[:10]:
+        tt = int(trade.get('time')) / 1000
+        time_last_trades = datetime.utcfromtimestamp(tt).strftime('%Y-%m-%d %H:%M:%S')
         symbol = trade.get('symbol')
-        price = trade.get('price')
-        qty = trade.get('qty')
-        quote_qty = trade.get('quote_qty')
-        commission = trade.get('commission')
-        commission_asset = trade.get('commission_asset')
-        print(f"time_last_trades: {t}, symbol: {symbol}, price: {price},"
+        price = float(trade.get('price'))
+        qty = float(trade.get('qty'))
+        quote_qty = float(trade.get('quoteQty'))
+        commission = float(trade.get('commission'))
+        commission_asset = trade.get('commissionAsset')
+        print(f"time_last_trades: {time_last_trades}, symbol: {symbol}, price: {price},"
               f"qty: {qty}, quote_qty {quote_qty}, commis: {commission}, "
               f"commisAsset: {commission_asset}")
+        return time_last_trades, symbol, price, qty, quote_qty, commission, commission_asset
 
 
 def a_price(symbol):

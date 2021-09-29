@@ -35,7 +35,7 @@ def ticker_info(ticker):
 def coin(coin_name):
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     ticker_i = ticker_info(coin_name)
-    my_last_trades("MBOXUSDT")
+    # my_last_trades("MBOXUSDT")
     # for i in ticker_i:
     #     # print(i.symbol)
     #     price = a_price(i.symbol)
@@ -54,7 +54,7 @@ async def all_usdt():
 
 
 # @app.route('/get_all_pairs/', methods=['POST', 'GET'])
-async def get_all_pairs():
+def get_all_pairs():
     all_tradable_pairs(client)
     all_pairs_get = read_all_pairs()
 
@@ -91,23 +91,26 @@ def base():
 
 # @app.route('/my_coins/', methods=['POST', 'GET'])
 def my_coins():
+    # получаю все данные с бинанса
     getting_data_from_binance()
-
+    # удаляю время последнего апдейта
     DbsUpdateTime.query.delete()
+    # получаю время последнего апдейта
     times1 = db_updating_time()
+    # записываю время последнего апдейта
     t = DbsUpdateTime(assets_table_time_upd=times1)
     db.session.add(t)
     db.session.commit()
+    # принимаю время обновления из базы для вывода на страницу
     times, times_a, times_all = last_update_time()
-
-    # Assets.query.delete()
-    # db.session.commit()
+    # принимаю количество тикеров
     tickers_number = count_of_coins(AllTickers)
-    my_assets, number, super_total_eur, super_total_usd, price = coin_shown_engine()
-    print(my_assets)
+    # принимаю данные для вывода на страницу
+    my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
+    print(super_total_eur)
     template_context = dict(my_assets=my_assets, super_total_usd=super_total_usd,
                             super_total_eur=super_total_eur, number=number, tickers_number=tickers_number, times=times,
-                            times_all=times_all, times_a=times_a, price=price)
+                            times_all=times_all, times_a=times_a)
     return render_template('index.html', **template_context)
 
 

@@ -1,7 +1,39 @@
-from dbs import AllTickers, Assets, db
+from dbs import db, Assets, AllTickers, myTrades
 from time import time
 from tradingview_ta import TA_Handler, Interval
 from datetime import datetime
+from get_data_from_binance import client
+# from get_data_from_binance import my_last_trades
+
+def my_last_trades(asset1):
+    trades = client.get_my_trades(symbol=asset1)
+    print(f"My {asset1} trades:")
+    # print(trades)
+    for trade in trades[:10]:
+        tt = int(trade.get('time')) / 1000
+        time_last_trades = datetime.utcfromtimestamp(tt).strftime('%Y-%m-%d %H:%M:%S')
+        symbol = trade.get('symbol')
+        price = float(trade.get('price'))
+        qty = float(trade.get('qty'))
+        quote_qty = float(trade.get('quoteQty'))
+        commission = float(trade.get('commission'))
+        commission_asset = trade.get('commissionAsset')
+        # print(f"time_last_trades: {time_last_trades}, symbol: {symbol}, price: {price},"
+        #       f"qty: {qty}, quote_qty {quote_qty}, commis: {commission}, "
+        #       f"commisAsset: {commission_asset}")
+        exists = db.session.query(myTrades.id).filter_by(symbol=symbol).first() is not None
+        if not exists:
+            admin2 = myTrades(symbol=symbol, time_last_trades=time_last_trades, , price, qty, quote_qty, commission, commission_asset)
+            db.session.add(admin2)
+            db.session.commit()
+        else:
+            admin = AllTickers.query.filter_by(ticker=symbol).first()
+            admin.ticker = symbol
+            admin.recommendatsion = recommendatsion
+            admin.recommendatsion_all_day = recommendatsion_all_day
+            db.session.add(admin)
+            db.session.commit()
+        return time_last_trades, symbol, price, qty, quote_qty, commission, commission_asset
 
 
 def db_updating_time():
@@ -88,9 +120,11 @@ def all_tradable_pairs(client):
         if bid_price > 0:
             count += 1
             symbol = ticker.get('symbol')
+            my_last_trades(symbol)
             try:
                 recommendatsion = trading_view_recommendation_all(symbol, Interval.INTERVAL_4_HOURS)
                 recommendatsion_all_day = trading_view_recommendation_all(symbol, Interval.INTERVAL_1_DAY)
+                # t, symbol2, price, qty, quote_qty, commission, commission_asset = my_last_trades(symbol)
             except:
                 pass
             exists = db.session.query(AllTickers.id).filter_by(ticker=symbol).first() is not None
