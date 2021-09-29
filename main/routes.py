@@ -1,6 +1,6 @@
 from flask import render_template, request
-from get_data_from_binance import getting_data_from_binance, pairs_info_from_binance, my_last_trades
-from dbs import AllTickers, PairsInfo, db, DbsUpdateTime, AllTickersUpdateTime, TickersInfoUpdateTime
+from funcs import getting_data_from_binance, pairs_info_from_binance, my_last_trades
+from dbs import AllTickers, PairsInfo, db, DbsUpdateTime, AllTickersUpdateTime, TickersInfoUpdateTime, myTrades
 from funcs import read_all_pairs, coin_shown_engine, count_of_coins, all_tradable_pairs, db_updating_time
 from binance_info import client
 
@@ -34,18 +34,28 @@ def ticker_info(ticker):
 # @app.route('/coin/<coin_name>/')
 def coin(coin_name):
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
-    ticker_i = ticker_info(coin_name)
-    # my_last_trades("MBOXUSDT")
-    # for i in ticker_i:
-    #     # print(i.symbol)
+    all_pairs_info, ticker_i = my_trade_pairs(coin_name)
     #     price = a_price(i.symbol)
     #     pairs_info = PairsInfo(symbol=i.symbol, test=price)
     #     db.session.add(pairs_info)
     #     db.session.commit()
 
-    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i)
+    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i, all_pairs_info=all_pairs_info)
 
     return render_template('my_coin.html', **template_context)
+
+
+def my_trade_pairs(coin_name):
+    ticker_i = ticker_info(coin_name)
+    # print(ticker_i.symbol)
+    # my_last_trades("MBOXUSDT")
+    for i in ticker_i:
+        print(i.symbol)
+        # pair = [i.symbol]
+        all_pairs_info = db.session.query(myTrades).filter(
+            myTrades.symbol == i.symbol).order_by(myTrades.symbol).all()
+        print(all_pairs_info)
+    return all_pairs_info, ticker_i
 
 
 # @app.route('/all_usdt/', methods=['POST', 'GET'])

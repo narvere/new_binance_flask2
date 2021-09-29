@@ -26,7 +26,9 @@ migrate = Migrate(app, db)
 class myTrades(db.Model):
     __tablename__ = 'mytrades'
     id = db.Column(db.Integer, primary_key=True)
-    symbol = db.Column(db.String(50), unique=True, nullable=False)
+    symbol = db.Column(db.String(50), unique=False, nullable=True)
+    binance_id = db.Column(db.Integer, unique=True, nullable=True)
+    orderId = db.Column(db.Integer, unique=False, nullable=True)
     time_last_trades = db.Column(db.String(50), unique=False, nullable=True)
     price = db.Column(db.Float, unique=False, nullable=True)
     qty = db.Column(db.Float, unique=False, nullable=True)
@@ -34,8 +36,10 @@ class myTrades(db.Model):
     commis = db.Column(db.Float, unique=False, nullable=True)
     commisAsset = db.Column(db.String(20), unique=False, nullable=True)
 
-    def __init__(self, symbol, time_last_trades, price, qty, quote_qty, commis, commisAsset):
+    def __init__(self, symbol, binance_id, orderId, time_last_trades, price, qty, quote_qty, commis, commisAsset):
         self.symbol = symbol
+        self.binance_id = binance_id
+        self.orderId = orderId
         self.time_last_trades = time_last_trades
         self.price = price
         self.qty = qty

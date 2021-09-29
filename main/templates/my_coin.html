@@ -37,11 +37,21 @@
             </tbody>
         </table>
         <p>{% for i in ticker_i %}
+
             {{ i.symbol }}
-            {{ i.test }}
-            <hr>
-            <br>
-            {% endfor %}
+
+        <hr>
+
+        {% endfor %}
+
+        <p>{% for i in all_pairs_info %}
+
+            {{ i.symbol }}
+
+        <hr>
+
+        {% endfor %}
+
 
 
         <br>

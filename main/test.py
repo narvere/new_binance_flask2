@@ -98,11 +98,24 @@ from tradingview_ta import TA_Handler, Interval
 #     print(all_pairs)
 
 
-from get_data_from_binance import my_last_trades
+from funcs import my_last_trades
 import asyncio
 
+# from binance_info import client
+# def mail():
+#     trades = client.get_my_trades(symbol="BTCUSDT")
+#     for trade in trades[:10]:
+#         print(trade)
+#
+# mail()
 
-def mail():
-    my_last_trades("MBOXUSDT")
+from dbs import myTrades, db, app
+with app.app_context():
+#     db.session.query(myTrades).delete()
+#     db.session.commit()
 
-mail()
+    pair = ['BTCUSDT']
+    all_pairs_info = db.session.query(myTrades).filter(
+            myTrades.symbol.in_([pair])).order_by(myTrades.symbol).all()
+
+    print(all_pairs_info)
