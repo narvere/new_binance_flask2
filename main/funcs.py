@@ -157,8 +157,8 @@ def my_last_trades(asset1):
         exists = db.session.query(myTrades.id).filter_by(binance_id=binance_id).first() is not None
         if not exists:
             admin = myTrades(symbol=symbol, time_last_trades=time_last_trades, price=price, qty=qty,
-                              quote_qty=quote_qty, commis=commission, commisAsset=commission_asset,
-                              binance_id=binance_id, orderId=orderId)
+                             quote_qty=quote_qty, commis=commission, commisAsset=commission_asset,
+                             binance_id=binance_id, orderId=orderId)
             db.session.add(admin)
         db.session.commit()
     #     else:
@@ -252,7 +252,7 @@ def read_all_pairs():
 
 def all_tradable_pairs(client):
     # t0 = time()
-    global recommendatsion, recommendatsion_all_day
+    # global recommendatsion, recommendatsion_all_day
     tickers1 = client.get_orderbook_tickers()
     # AllTickers.query.delete()
     count = 0
@@ -267,22 +267,23 @@ def all_tradable_pairs(client):
                 recommendatsion = trading_view_recommendation_all(symbol, Interval.INTERVAL_4_HOURS)
                 recommendatsion_all_day = trading_view_recommendation_all(symbol, Interval.INTERVAL_1_DAY)
                 # t, symbol2, price, qty, quote_qty, commission, commission_asset = my_last_trades(symbol)
+                exists = db.session.query(AllTickers.id).filter_by(ticker=symbol).first() is not None
+                if not exists:
+                    admin2 = AllTickers(ticker=symbol, recommendatsion=recommendatsion,
+                                        recommendatsion_all_day=recommendatsion_all_day)
+                    db.session.add(admin2)
+                    db.session.commit()
+                else:
+                    admin = AllTickers.query.filter_by(ticker=symbol).first()
+                    admin.ticker = symbol
+                    admin.recommendatsion = recommendatsion
+                    admin.recommendatsion_all_day = recommendatsion_all_day
+                    db.session.add(admin)
+                    db.session.commit()
+                    print('11111111')
+                print(count, symbol, recommendatsion)
             except:
                 pass
-            exists = db.session.query(AllTickers.id).filter_by(ticker=symbol).first() is not None
-            if not exists:
-                admin2 = AllTickers(ticker=symbol, recommendatsion=recommendatsion,
-                                    recommendatsion_all_day=recommendatsion_all_day)
-                db.session.add(admin2)
-                db.session.commit()
-            else:
-                admin = AllTickers.query.filter_by(ticker=symbol).first()
-                admin.ticker = symbol
-                admin.recommendatsion = recommendatsion
-                admin.recommendatsion_all_day = recommendatsion_all_day
-                db.session.add(admin)
-                db.session.commit()
-                print('11111111')
-            print(count, symbol, recommendatsion)
+
     # tt = time() - t0
     # print(tt)

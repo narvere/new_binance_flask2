@@ -1,5 +1,5 @@
 from flask import render_template, request
-from funcs import getting_data_from_binance, pairs_info_from_binance, my_last_trades
+from funcs import getting_data_from_binance, pairs_info_from_binance
 from dbs import AllTickers, PairsInfo, db, DbsUpdateTime, AllTickersUpdateTime, TickersInfoUpdateTime, myTrades
 from funcs import read_all_pairs, coin_shown_engine, count_of_coins, all_tradable_pairs, db_updating_time
 from binance_info import client
@@ -55,7 +55,7 @@ def my_trade_pairs(coin_name):
         all_pairs_info = db.session.query(myTrades).filter(
             myTrades.symbol == i.symbol).order_by(myTrades.symbol).all()
         print(all_pairs_info)
-    return all_pairs_info, ticker_i
+        return all_pairs_info, ticker_i
 
 
 # @app.route('/all_usdt/', methods=['POST', 'GET'])
