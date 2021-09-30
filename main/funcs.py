@@ -7,6 +7,7 @@ from binance_info import status, balances, client, exchange_info
 # from funcs import trading_view_recommendation, db_updating_time
 from datetime import datetime
 
+trades_downloading = False
 
 # def my_last_trades(asset1):
 #     trades = client.get_my_trades(symbol=asset1)
@@ -90,6 +91,7 @@ def get_prices(symbol):
 
 def getting_data_from_binance():
     global locked, free, asset, total_usd, total_eur, price_e, recommendatsion, recommendatsion_d1, price
+
     if status.get("msg") == 'normal':
         super_total = 0
         for balance in balances:
@@ -262,7 +264,9 @@ def all_tradable_pairs(client):
         if bid_price > 0:
             count += 1
             symbol = ticker.get('symbol')
-            my_last_trades(symbol)
+
+            if trades_downloading == True:
+                my_last_trades(symbol)
             try:
                 recommendatsion = trading_view_recommendation_all(symbol, Interval.INTERVAL_4_HOURS)
                 recommendatsion_all_day = trading_view_recommendation_all(symbol, Interval.INTERVAL_1_DAY)

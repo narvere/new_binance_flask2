@@ -33,14 +33,14 @@ def ticker_info(ticker):
 
 # @app.route('/coin/<coin_name>/')
 def coin(coin_name):
+    # мзывает данные моей монеты
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
+    times, times_a, times_all = last_update_time()
     all_pairs_info, ticker_i = my_trade_pairs(coin_name)
-    #     price = a_price(i.symbol)
-    #     pairs_info = PairsInfo(symbol=i.symbol, test=price)
-    #     db.session.add(pairs_info)
-    #     db.session.commit()
 
-    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i, all_pairs_info=all_pairs_info)
+    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i, all_pairs_info=all_pairs_info,
+                            number=number, super_total_eur=super_total_eur, super_total_usd=super_total_usd,
+                            times=times, times_a=times_a, times_all=times_all)
 
     return render_template('my_coin.html', **template_context)
 
@@ -87,6 +87,7 @@ def last_update_time():
 
 
 # @app.route('/')
+
 def base():
     times, times_a, times_all = last_update_time()
 
