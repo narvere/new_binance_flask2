@@ -7,7 +7,7 @@ from binance_info import status, balances, client, exchange_info
 # from funcs import trading_view_recommendation, db_updating_time
 from datetime import datetime
 
-trades_downloading = False
+trades_downloading = True
 
 
 def a_price(symbol):
@@ -24,7 +24,7 @@ def pairs_info_from_binance():
         orderTypes = str(item.get("orderTypes"))
         permissions = str(item.get("permissions"))
         price = a_price(symbol)
-        # print(symbol, price)
+        print(symbol, price)
         exists = db.session.query(PairsInfo.id).filter_by(symbol=symbol).first() is not None
         if not exists:
             pairs_info = PairsInfo(symbol=symbol, baseAsset=baseAsset, quoteAsset=quoteAsset, orderTypes=orderTypes,
@@ -245,7 +245,10 @@ def all_tradable_pairs(client):
         if bid_price > 0:
             count += 1
             symbol = ticker.get('symbol')
-
+            # all_pairs_info = db.session.query(myTrades).filter(
+            #     myTrades.symbol == symbol).order_by(myTrades.symbol).all()
+            all_pairs_info = 0
+            print(symbol)
             if trades_downloading == True:
                 my_last_trades(symbol)
             try:
@@ -255,12 +258,13 @@ def all_tradable_pairs(client):
                 exists = db.session.query(AllTickers.id).filter_by(ticker=symbol).first() is not None
                 if not exists:
                     admin2 = AllTickers(ticker=symbol, recommendatsion=recommendatsion,
-                                        recommendatsion_all_day=recommendatsion_all_day)
+                                        recommendatsion_all_day=recommendatsion_all_day, all_pairs_info=all_pairs_info)
                     db.session.add(admin2)
                     db.session.commit()
                 else:
                     admin = AllTickers.query.filter_by(ticker=symbol).first()
                     admin.ticker = symbol
+                    admin.all_pairs_info = all_pairs_info
                     admin.recommendatsion = recommendatsion
                     admin.recommendatsion_all_day = recommendatsion_all_day
                     db.session.add(admin)

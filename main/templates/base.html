@@ -69,11 +69,11 @@
     <div class="row">
         <div class="col">
             <form action="{{ url_for('my_coins') }}">
-                <button type="submit" class="btn btn-danger">Загрузить мои монеты</button>
+                <button type="submit" class="btn btn-danger">Загрузить мои монеты (Assets db)</button>
             </form>
             <br>
             <form action="{{ url_for('base') }}">
-                <button type="submit" class="btn btn-primary">Посмотреть мои монеты</button>
+                <button type="submit" class="btn btn-primary">Посмотреть мои монеты (Assets db)</button>
             </form>
             <br>
             {% for el in times %}
@@ -83,11 +83,11 @@
         </div>
         <div class="col">
             <form action="{{ url_for('get_all_pairs') }}">
-                <button type="submit" class="btn btn-danger">Загрузить все пары и мои трейды</button>
+                <button type="submit" class="btn btn-danger">Загрузить все пары и мои трейды (AllTickers db)</button>
             </form>
             <br>
             <form action="{{ url_for('all_pairs') }}">
-                <button type="submit" class="btn btn-primary">Посмотреть все пары</button>
+                <button type="submit" class="btn btn-primary">Посмотреть все пары (AllTickers db)</button>
             </form>
             <br>
             {% for el in times_all %}
@@ -101,7 +101,7 @@
             </form>
             <br>
             <form action="{{ url_for('info_tickers') }}">
-                <button type="submit" class="btn btn-danger">Загрузить инфу о тикерах</button>
+                <button type="submit" class="btn btn-danger">Загрузить инфу о тикерах (PairsInfo db)</button>
             </form>
             <br>
             {% for el in times_a %}

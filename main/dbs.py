@@ -161,11 +161,13 @@ class AllTickers(db.Model):
     ticker = db.Column(db.String(20), nullable=False, unique=True)
     recommendatsion = db.Column(db.String(50), nullable=True)
     recommendatsion_all_day = db.Column(db.String(50), nullable=True)
+    all_pairs_info = db.Column(db.String, nullable=True)
 
-    def __init__(self, ticker, recommendatsion, recommendatsion_all_day):
+    def __init__(self, ticker, recommendatsion, recommendatsion_all_day, all_pairs_info):
         self.ticker = ticker
         self.recommendatsion = recommendatsion
         self.recommendatsion_all_day = recommendatsion_all_day
+        self.all_pairs_info = all_pairs_info
 
     def __repr__(self):
         return '<Ticker %r>' % self.ticker
