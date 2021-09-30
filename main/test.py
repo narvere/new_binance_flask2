@@ -121,6 +121,15 @@ import asyncio
 #
 #     print(all_pairs_info)
 
+from dbs import myTrades, db, app
+from routes import ticker_info
+with app.app_context():
+    x = ticker_info('BTCUSDT')
+    print(x)
+
+
+
+
 # class Base:
 #     "Основной класс"
 #     x = 1
@@ -197,14 +206,14 @@ import asyncio
 # tp.z = int(input("Введите Z: "))
 # print(tp.__dict__)
 
-class Human:
-    def __init__(self, gender, population):
-        self.gender = gender
-        self.population = population
-
-man = Human(gender=1, population=1)
-
-man.gender = 'Male'
-man.population = 15000
-
-print(man.__dict__)
+# class Human:
+#     def __init__(self, gender, population):
+#         self.gender = gender
+#         self.population = population
+#
+# man = Human(gender=1, population=1)
+#
+# man.gender = 'Male'
+# man.population = 15000
+#
+# print(man.__dict__)

@@ -24,7 +24,7 @@ def pairs_info_from_binance():
         orderTypes = str(item.get("orderTypes"))
         permissions = str(item.get("permissions"))
         price = a_price(symbol)
-        print(symbol, price)
+        # print(symbol, price)
         exists = db.session.query(PairsInfo.id).filter_by(symbol=symbol).first() is not None
         if not exists:
             pairs_info = PairsInfo(symbol=symbol, baseAsset=baseAsset, quoteAsset=quoteAsset, orderTypes=orderTypes,
@@ -68,7 +68,7 @@ def save_or_update_db():
 def get_prices(symbol):
     avg_price = client.get_avg_price(symbol=symbol)
     price = avg_price.get('price')
-    print(price)
+    # print(price)
 
 
 def getting_data_from_binance():
@@ -83,7 +83,7 @@ def getting_data_from_binance():
                 asset = str(balance.get("asset"))
                 if asset != 'USDT' and asset != 'BETH':
                     try:
-                        print(asset)
+                        # print(asset)
                         recommendatsion = trading_view_recommendation(asset, Interval.INTERVAL_4_HOURS)
                         recommendatsion_d1 = trading_view_recommendation(asset, Interval.INTERVAL_1_DAY)
 
@@ -100,7 +100,7 @@ def getting_data_from_binance():
                     except:
                         recommendatsion = "No info"
                         recommendatsion_d1 = "No info"
-                        print(asset)
+                        # print(asset)
 
                 else:
                     total_usd = round((free + locked), 2)
@@ -122,8 +122,8 @@ def getting_data_from_binance():
 
 def my_last_trades(asset1):
     trades = client.get_my_trades(symbol=asset1)
-    print(f"My {asset1} trades:")
-    print(trades)
+    # print(f"My {asset1} trades:")
+    # print(trades)
     for trade in trades[:10]:
         tt = int(trade.get('time')) / 1000
         time_last_trades = datetime.utcfromtimestamp(tt).strftime('%Y-%m-%d %H:%M:%S')
@@ -135,9 +135,9 @@ def my_last_trades(asset1):
         quote_qty = float(trade.get('quoteQty'))
         commission = float(trade.get('commission'))
         commission_asset = trade.get('commissionAsset')
-        print(f"time_last_trades: {time_last_trades}, symbol: {symbol}, price: {price},"
-              f"qty: {qty}, quote_qty {quote_qty}, commis: {commission}, "
-              f"commisAsset: {commission_asset}")
+        # print(f"time_last_trades: {time_last_trades}, symbol: {symbol}, price: {price},"
+        #       f"qty: {qty}, quote_qty {quote_qty}, commis: {commission}, "
+        #       f"commisAsset: {commission_asset}")
         exists = db.session.query(myTrades.id).filter_by(binance_id=binance_id).first() is not None
         if not exists:
             admin = myTrades(symbol=symbol, time_last_trades=time_last_trades, price=price, qty=qty,
@@ -209,7 +209,7 @@ def currency(asset):
 def coin_shown_engine():
     t0 = time()
     my_assets = Assets.query.order_by(-Assets.total_usd).all()
-    print(type(my_assets))
+    # print(type(my_assets))
     # recommend = trading_view_recommendation('BTC')
     super_total_usd = currency('total_usd')
     super_total_eur = currency('total_eur')
@@ -230,7 +230,7 @@ def read_all_pairs():
     all_pairs = db.session.query(AllTickers).filter(
         AllTickers.recommendatsion_all_day.in_(['STRONG_BUY', 'BUY'])).order_by(AllTickers.recommendatsion_all_day,
                                                                                 AllTickers.recommendatsion).all()
-    print("ok")
+    # print("ok")
     return all_pairs
 
 
@@ -265,8 +265,8 @@ def all_tradable_pairs(client):
                     admin.recommendatsion_all_day = recommendatsion_all_day
                     db.session.add(admin)
                     db.session.commit()
-                    print('11111111')
-                print(count, symbol, recommendatsion)
+                #     print('11111111')
+                # print(count, symbol, recommendatsion)
             except:
                 pass
 

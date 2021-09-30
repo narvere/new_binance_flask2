@@ -8,7 +8,7 @@ from binance_info import client
 async def info_tickers():
     pairs_info_from_binance()
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
-    print(my_assets)
+    # print(my_assets)
     tickers_number = count_of_coins(AllTickers)
 
     TickersInfoUpdateTime.query.delete()
@@ -33,9 +33,12 @@ def ticker_info(ticker):
 
 # @app.route('/coin/<coin_name>/')
 def coin(coin_name):
+    print("def coin(coin_name)")
     # мзывает данные моей монеты
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
+    # мзывает данные последнего обновления
     times, times_a, times_all = last_update_time()
+    # мои торговые пары
     all_pairs_info, ticker_i = my_trade_pairs(coin_name)
 
     template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i, all_pairs_info=all_pairs_info,
@@ -46,15 +49,15 @@ def coin(coin_name):
 
 
 def my_trade_pairs(coin_name):
+    print("def my_trade_pairs(coin_name):")
     ticker_i = ticker_info(coin_name)
     # print(ticker_i.symbol)
     # my_last_trades("MBOXUSDT")
     for i in ticker_i:
-        print(i.symbol)
-        # pair = [i.symbol]
+        # print(i.symbol)
         all_pairs_info = db.session.query(myTrades).filter(
             myTrades.symbol == i.symbol).order_by(myTrades.symbol).all()
-        print(all_pairs_info)
+        # print(all_pairs_info)
         return all_pairs_info, ticker_i
 
 
@@ -92,7 +95,7 @@ def base():
     times, times_a, times_all = last_update_time()
 
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
-    print(my_assets)
+    # print(my_assets)
     tickers_number = count_of_coins(AllTickers)
     template_context = dict(my_assets=my_assets, super_total_usd=super_total_usd,
                             super_total_eur=super_total_eur, number=number, tickers_number=tickers_number, times=times,
@@ -118,7 +121,7 @@ def my_coins():
     tickers_number = count_of_coins(AllTickers)
     # принимаю данные для вывода на страницу
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
-    print(super_total_eur)
+    # print(super_total_eur)
     template_context = dict(my_assets=my_assets, super_total_usd=super_total_usd,
                             super_total_eur=super_total_eur, number=number, tickers_number=tickers_number, times=times,
                             times_all=times_all, times_a=times_a)
