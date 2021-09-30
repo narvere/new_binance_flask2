@@ -101,6 +101,7 @@ from tradingview_ta import TA_Handler, Interval
 from funcs import my_last_trades
 import asyncio
 
+
 # from binance_info import client
 # def mail():
 #     trades = client.get_my_trades(symbol="BTCUSDT")
@@ -109,13 +110,101 @@ import asyncio
 #
 # mail()
 
-from dbs import myTrades, db, app
-with app.app_context():
-#     db.session.query(myTrades).delete()
-#     db.session.commit()
+# from dbs import myTrades, db, app
+# with app.app_context():
+# #     db.session.query(myTrades).delete()
+# #     db.session.commit()
+#
+#     pair = ['BTCUSDT']
+#     all_pairs_info = db.session.query(myTrades).filter(
+#             myTrades.symbol.in_([pair])).order_by(myTrades.symbol).all()
+#
+#     print(all_pairs_info)
 
-    pair = ['BTCUSDT']
-    all_pairs_info = db.session.query(myTrades).filter(
-            myTrades.symbol.in_([pair])).order_by(myTrades.symbol).all()
+# class Base:
+#     "Основной класс"
+#     x = 1
+#     y = 1
+#     # def __init__(self, times, times_a, times_all, my_assets, number, super_total_eur, super_total_usd):
+#     self.times = times
+#     self.times_a = times_a
+#     self.times_all = times_all
+#     self.my_assets = my_assets
+#     self.number = number
+#     self.super_total_eur = super_total_eur
+#     self.super_total_usd = super_total_usd
 
-    print(all_pairs_info)
+# ph = Base()
+# ph.x = 5
+# ph.y = 10
+# print(ph.x, ph.y)
+
+
+# print(Base.__doc__)
+# print(Base.__name__)
+# print(ph.__dict__)
+# print(dir(Base))
+
+# getattr(obj, name[,default]) - возвращает значение атрибута объекта
+# hasattr(obj, name) - проверяет на наличие атрибута name в obj
+# setattr(obj, name, value) - задает значение атрибута
+# delattr(obj, name) - удаляет атрибут с именем name
+
+# print(getattr(ph, 'x'))
+# print(getattr(ph, 'z', False))
+# print(hasattr(ph, 'y'))
+# setattr(ph, 'g', 7)
+# print(ph.__dict__)
+# delattr(ph, 'g')
+# print(ph.__dict__)
+# setattr(Base, 'g', 7)
+# print(Base.__dict__)
+#
+# Base.xxx = 1000
+# ph.yyy  = 5
+# print(isinstance(ph, Base))
+
+# class Point:
+#     def __init__(self, x=0, y=0):
+#         print("Создание экземпляра класса Point")
+#         self.x = x
+#         self.y = y
+#     x = 1
+#     y = 1
+#     def __del__(self):
+#         print("Удаление экземпляра класса Point " +self.__str__())
+#
+#     def setCoords(self, x, y):
+#         self.a = x
+#         self.b = y
+#
+#
+# pt = Point()
+# pt2 = Point(5)
+# pt3 = Point(5,10)
+#
+# # pt.setCoords(5, 6)
+# print(pt.__dict__)
+# print(pt2.__dict__)
+# print(pt3.__dict__)
+# # Point.setCoords(pt, 5, 10)
+# # print(pt.__dict__)
+# # print(pt.x)
+
+
+# tp.x = int(input("Введите X: "))
+# tp.y = int(input("Введите Y: "))
+# tp.z = int(input("Введите Z: "))
+# print(tp.__dict__)
+
+class Human:
+    def __init__(self, gender, population):
+        self.gender = gender
+        self.population = population
+
+man = Human(gender=1, population=1)
+
+man.gender = 'Male'
+man.population = 15000
+
+print(man.__dict__)

@@ -9,24 +9,6 @@ from datetime import datetime
 
 trades_downloading = False
 
-# def my_last_trades(asset1):
-#     trades = client.get_my_trades(symbol=asset1)
-#     print(f"My {asset1} trades:")
-#     print(trades)
-#     for trade in trades[:10]:
-#         tt = int(trade.get('time')) / 1000
-#         time_last_trades = datetime.utcfromtimestamp(tt).strftime('%Y-%m-%d %H:%M:%S')
-#         symbol = trade.get('symbol')
-#         price = float(trade.get('price'))
-#         qty = float(trade.get('qty'))
-#         quote_qty = float(trade.get('quoteQty'))
-#         commission = float(trade.get('commission'))
-#         commission_asset = trade.get('commissionAsset')
-#         print(f"time_last_trades: {time_last_trades}, symbol: {symbol}, price: {price},"
-#               f"qty: {qty}, quote_qty {quote_qty}, commis: {commission}, "
-#               f"commisAsset: {commission_asset}")
-#         return time_last_trades, symbol, price, qty, quote_qty, commission, commission_asset
-
 
 def a_price(symbol):
     avg_price = client.get_avg_price(symbol=symbol)
@@ -254,7 +236,6 @@ def read_all_pairs():
 
 def all_tradable_pairs(client):
     # t0 = time()
-    # global recommendatsion, recommendatsion_all_day
     tickers1 = client.get_orderbook_tickers()
     # AllTickers.query.delete()
     count = 0
