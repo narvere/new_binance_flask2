@@ -121,12 +121,12 @@ import asyncio
 #
 #     print(all_pairs_info)
 
-from dbs import myTrades, db, app
-from routes import ticker_info
-with app.app_context():
-    x = ticker_info('BTCUSDT')
-    print(x)
-
+# from dbs import myTrades, db, app, AllTickers
+# from routes import ticker_info
+# with app.app_context():
+#     x = ticker_info('BTCUSDT')
+#     print(x)
+#
 
 
 
@@ -217,3 +217,14 @@ with app.app_context():
 # man.population = 15000
 #
 # print(man.__dict__)
+
+from dbs import myTrades, db, app, myTrades, PairsInfo
+with app.app_context():
+    all_pairs = db.session.query(myTrades).filter(myTrades.symbol == 'BTCUSDT').all()
+# print(all_pairs)
+with app.app_context():
+    for i in all_pairs:
+        print(i.symbol)
+        all_pairss = db.session.query(PairsInfo).filter(PairsInfo.symbol == i.symbol).all()
+        for m in all_pairss:
+            print(m.baseAsset)

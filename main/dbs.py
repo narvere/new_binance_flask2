@@ -78,19 +78,28 @@ class TickersInfoUpdateTime(db.Model):
         return '<time %r>' % self.tickers_info_table_time_upd
 
 
-class MyTrades(db.Model):
-    __tablename__ = 'my_trades'
-    id = db.Column(db.Integer, primary_key=True)
-    time_last_trades = db.Column(db.String(50), unique=False, nullable=True)
-    symbol = db.Column(db.String(50), nullable=False)
-    price = db.Column(db.String(50), unique=False, nullable=True)
-    qty = db.Column(db.String(50), unique=False, nullable=True)
-    quote_qty = db.Column(db.String(50), unique=False, nullable=True)
-    commis = db.Column(db.String(50), unique=False, nullable=True)
-    commisAsset = db.Column(db.String(50), unique=False, nullable=True)
-
-    def __repr__(self):
-        return '<symbol %r>' % self.symbol
+# class MyTrades(db.Model):
+#     __tablename__ = 'my_trades'
+#     id = db.Column(db.Integer, primary_key=True)
+#     time_last_trades = db.Column(db.String(50), unique=False, nullable=True)
+#     symbol = db.Column(db.String(50), nullable=False)
+#     price = db.Column(db.String(50), unique=False, nullable=True)
+#     qty = db.Column(db.String(50), unique=False, nullable=True)
+#     quote_qty = db.Column(db.String(50), unique=False, nullable=True)
+#     commis = db.Column(db.String(50), unique=False, nullable=True)
+#     commisAsset = db.Column(db.String(50), unique=False, nullable=True)
+#
+#     def __init__(self, time_last_trades, symbol, price, qty, quote_qty, commis, commisAsset):
+#         self.symbol = symbol
+#         self.time_last_trades = time_last_trades
+#         self.price = price
+#         self.qty = qty
+#         self.quote_qty = quote_qty
+#         self.commis = commis
+#         self.commisAsset = commisAsset
+#
+#     def __repr__(self):
+#         return '<symbol %r>' % self.symbol
 
 
 class PairsInfo(db.Model):
