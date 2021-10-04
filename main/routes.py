@@ -26,14 +26,14 @@ async def info_tickers():
     return render_template('index.html', **template_context)
 
 
-def ticker_info(ticker):
-    # all_pairs_info = db.session.query(PairsInfo).filter(
-    #     PairsInfo.baseAsset.in_([ticker])).order_by(PairsInfo.symbol).all()
-    all_pairs_info = db.session.query(coinInfotrades).filter(
-        coinInfotrades.baseAsset.in_([ticker])).order_by(db.desc(coinInfotrades.time_last_trades)).all()
-    first_pairs_info = db.session.query(coinInfotrades).filter(
-        coinInfotrades.baseAsset.in_([ticker])).order_by(db.desc(coinInfotrades.time_last_trades)).first()
-    return all_pairs_info, first_pairs_info
+# def ticker_info(ticker):
+#     # all_pairs_info = db.session.query(PairsInfo).filter(
+#     #     PairsInfo.baseAsset.in_([ticker])).order_by(PairsInfo.symbol).all()
+#     all_pairs_info = db.session.query(coinInfotrades).filter(
+#         coinInfotrades.baseAsset.in_([ticker])).order_by(db.desc(coinInfotrades.time_last_trades)).all()
+#     # first_pairs_info = db.session.query(coinInfotrades).filter(
+#     #     coinInfotrades.baseAsset.in_([ticker])).order_by(db.desc(coinInfotrades.time_last_trades)).first()
+#     return all_pairs_info, first_pairs_info
 
 
 # @app.route('/coin/<coin_name>/')
@@ -44,17 +44,22 @@ def coin(coin_name):
     # мзывает данные последнего обновления
     times, times_a, times_all = last_update_time()
     # мои торговые пары
-    ticker_i = my_trade_pairs(coin_name)
+    ticker_i, first_pairs_info = my_trade_pairs(coin_name)
 
-    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i,                            number=number, super_total_eur=super_total_eur, super_total_usd=super_total_usd,
-                            times=times, times_a=times_a, times_all=times_all)
+    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i, number=number,
+                            super_total_eur=super_total_eur, super_total_usd=super_total_usd,
+                            times=times, times_a=times_a, times_all=times_all, first_pairs_info=first_pairs_info)
 
     return render_template('my_coin.html', **template_context)
 
 
 def my_trade_pairs(coin_name):
     print("def my_trade_pairs(coin_name):")
-    ticker_i = ticker_info(coin_name)
+    # ticker_i = ticker_info(coin_name)
+    ticker_i = db.session.query(coinInfotrades).filter(
+        coinInfotrades.baseAsset.in_([coin_name])).order_by(db.desc(coinInfotrades.time_last_trades)).all()
+    first_pairs_info = db.session.query(coinInfotrades).filter(
+        coinInfotrades.baseAsset.in_([coin_name])).order_by(db.desc(coinInfotrades.time_last_trades)).first()
     # print(ticker_i.symbol)
     # my_last_trades("MBOXUSDT")
     # for i in ticker_i:
@@ -62,7 +67,7 @@ def my_trade_pairs(coin_name):
     #     all_pairs_info = db.session.query(coinInfotrades).filter(
     #         coinInfotrades.baseAsset == i.symbol).order_by(coinInfotrades.baseAsset).all()
     #     # print(all_pairs_info)
-    return ticker_i
+    return ticker_i, first_pairs_info
 
 
 # @app.route('/all_usdt/', methods=['POST', 'GET'])

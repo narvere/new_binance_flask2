@@ -6,8 +6,12 @@ from tradingview_ta import TA_Handler, Interval
 from binance_info import status, balances, client, exchange_info
 # from funcs import trading_view_recommendation, db_updating_time
 from datetime import datetime
+# from jinja2 import environment
 
 trades_downloading = True
+
+
+
 
 
 def my_coin_info():

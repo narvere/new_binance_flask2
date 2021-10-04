@@ -14,8 +14,10 @@
                 <th scope="col">Количество монет</th>
                 <th scope="col">Sell order</th>
                 <th scope="col">Текущая цена</th>
+                <th scope="col">Цена покупки</th>
                 <th scope="col">USDT</th>
                 <th scope="col">EUR</th>
+                <th scope="col">Прибыль/убыток</th>
                 <th scope="col">TradingView</th>
                 <th scope="col">Chart</th>
                 <th scope="col">Binance</th>
@@ -34,8 +36,13 @@
                 <td>{{el.free}}</td>
                 <td>{{el.locked}}</td>
                 <td>{{el.price}}</td>
+                <td>{{first_pairs_info.price}} {{first_pairs_info.quoteAsset}}</td>
                 <td>$ {{el.total_usd}}</td>
                 <td>€ {{el.total_eur}}</td>
+                <td>{{((el.price - first_pairs_info.price)*(el.free+el.locked))|round(2)}}
+                    {{first_pairs_info.quoteAsset}} ({{((el.price -
+                    first_pairs_info.price)/first_pairs_info.price*100)|round(2)}}%)
+                </td>
                 <td><a target="_blank" rel="noopener noreferrer"
                        href="https://ru.tradingview.com/symbols/{{ el.asset }}USDT/" class="btn btn-outline-info">TradingView</a>
                 </td>
