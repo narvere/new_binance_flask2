@@ -101,7 +101,6 @@ from tradingview_ta import TA_Handler, Interval
 from funcs import my_last_trades
 import asyncio
 
-
 # from binance_info import client
 # def mail():
 #     trades = client.get_my_trades(symbol="BTCUSDT")
@@ -127,7 +126,6 @@ import asyncio
 #     x = ticker_info('BTCUSDT')
 #     print(x)
 #
-
 
 
 # class Base:
@@ -217,14 +215,51 @@ import asyncio
 # man.population = 15000
 #
 # print(man.__dict__)
+#######################################
+from dbs import myTrades, db, app, myTrades, PairsInfo, coinInfotrades
 
-from dbs import myTrades, db, app, myTrades, PairsInfo
 with app.app_context():
-    all_pairs = db.session.query(myTrades).filter(myTrades.symbol == 'BTCUSDT').all()
+    all_pairs = db.session.query(myTrades).filter(myTrades.symbol == PairsInfo.symbol).all()
 # print(all_pairs)
 with app.app_context():
     for i in all_pairs:
         print(i.symbol)
         all_pairss = db.session.query(PairsInfo).filter(PairsInfo.symbol == i.symbol).all()
         for m in all_pairss:
-            print(m.baseAsset)
+            exists = db.session.query(coinInfotrades.id).filter_by(binance_id=i.binance_id).first() is not None
+            if not exists:
+                coinInfotradesDB = coinInfotrades(symbol=m.symbol, baseAsset=m.baseAsset, quoteAsset=m.quoteAsset,
+                                                  current_price=m.test, binance_id=i.binance_id, orderId=i.orderId,
+                                                  time_last_trades=i.time_last_trades, price=i.price, qty=i.qty,
+                                                  quote_qty=i.quote_qty, commis=i.commis, commisAsset=i.commisAsset)
+                db.session.add(coinInfotradesDB)
+                db.session.commit()
+                print(m.symbol, m.baseAsset, m.quoteAsset, m.test, i.binance_id, i.orderId, i.time_last_trades, i.price,
+                      i.qty, i.quote_qty, i.commis, i.commisAsset)
+            else:
+                admin = coinInfotrades.query.filter_by(binance_id=i.binance_id).first()
+                admin.symbol = m.symbol
+                admin.baseAsset = m.baseAsset
+                admin.quoteAsset = m.quoteAsset
+                admin.current_price = m.test
+                admin.binance_id = i.binance_id
+                admin.orderId = i.orderId
+                admin.time_last_trades = i.time_last_trades
+                admin.price = i.price
+                admin.qty = i.qty
+                admin.quote_qty = i.quote_qty
+                admin.commis = i.commis
+                admin.commisAsset = i.commisAsset
+                db.session.add(admin)
+                db.session.commit()
+# ##################################################
+
+# from binance_info import client
+#
+# trades = client.get_my_trades(symbol='ATOMUSDT')
+#
+# for trade in trades[:10]:
+#     isBuyer = trade.get('isBuyer')
+#     if not isBuyer:
+#         continue
+#     print(isBuyer)

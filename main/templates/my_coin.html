@@ -12,9 +12,15 @@
                 <th scope="col">#</th>
                 <th scope="col">Актив</th>
                 <th scope="col">Количество монет</th>
-                <th scope="col">Заблокированная сумма</th>
-                <th scope="col">Стоимость в долларах USDT</th>
-                <th scope="col">Стоимость в евро</th>
+                <th scope="col">Sell order</th>
+                <th scope="col">Текущая цена</th>
+                <th scope="col">USDT</th>
+                <th scope="col">EUR</th>
+                <th scope="col">TradingView</th>
+                <th scope="col">Chart</th>
+                <th scope="col">Binance</th>
+                <th scope="col">H4 / USDT</th>
+                <th scope="col">D1 / USDT</th>
             </tr>
             </thead>
             <tbody>
@@ -24,11 +30,26 @@
             {% if el.asset == coin_name %}
             <tr>
                 <th scope="row">{{loop.index}}</th>
-                <td>{{el.asset}}</td>
+                <td><a href="/coin/{{ el.asset }}">{{el.asset}}</a></td>
                 <td>{{el.free}}</td>
                 <td>{{el.locked}}</td>
+                <td>{{el.price}}</td>
                 <td>$ {{el.total_usd}}</td>
                 <td>€ {{el.total_eur}}</td>
+                <td><a target="_blank" rel="noopener noreferrer"
+                       href="https://ru.tradingview.com/symbols/{{ el.asset }}USDT/" class="btn btn-outline-info">TradingView</a>
+                </td>
+                <td><a target="_blank" rel="noopener noreferrer"
+                       href="https://ru.tradingview.com/chart/NxJ5WI0f/?symbol=BINANCE%3A{{ el.asset }}USDT"
+                       class="btn btn-outline-danger">Chart</a></td>
+                <td><a target="_blank" rel="noopener noreferrer"
+                       href="https://www.binance.com/ru/trade/{{ el.asset }}_USDT?layout=basic"
+                       class="btn btn-outline-warning">Binance</a></td>
+                {% block contentx %}
+
+                {% endblock %}
+
+
                 {{ reccomendatsion(el.recommendatsion) }}
                 {{ reccomendatsion(el.recommendatsion_d1) }}
             </tr>
@@ -36,24 +57,43 @@
             {% endfor %}
             </tbody>
         </table>
-        <p>{% for i in ticker_i %}
 
-            {{ i.symbol }}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Дата покупки</th>
+                <th scope="col">Пара</th>
+                <th scope="col">Цена покупки</th>
+                <th scope="col">Количество монет</th>
+                <th scope="col">Сколько потратил</th>
+                <th scope="col">Комиссия</th>
+                <th scope="col">Текущая цена</th>
+                <th scope="col">binance_id</th>
+                <th scope="col">orderId</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in ticker_i %}
+            <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td>{{ i.time_last_trades }}</td>
+                <td>{{ i.symbol }}</td>
+                <td>{{ i.price }} {{ i.quoteAsset }}</td>
+                <td>{{ i.qty }} {{ i.baseAsset }}</td>
+                <td>{{ i.quote_qty }} {{ i.quoteAsset }}</td>
+                <td>{{ i.commis }} {{i.commisAsset}}</td>
+                <td>{{ i.current_price }} {{ i.quoteAsset }}</td>
+                <td>{{ i.binance_id }}</td>
+                <td>{{ i.orderId }}</td>
 
-        <hr>
 
-        {% endfor %}
+            </tr>
+            {% endfor %}
 
-        <p>{% for i in all_pairs_info %}
 
-            xxxx
-
-            {{ i.symbol }}
-
-        <hr>
-
-        {% endfor %}
-
+            </tbody>
+        </table>
 
 
         <br>

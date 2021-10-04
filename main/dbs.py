@@ -23,6 +23,41 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
+class coinInfotrades(db.Model):
+    __tablename__ = 'coinInfotrades'
+    id = db.Column(db.Integer, primary_key=True)
+    symbol = db.Column(db.String(50), unique=False, nullable=True)
+    baseAsset = db.Column(db.String(50), unique=False, nullable=True)
+    quoteAsset = db.Column(db.String(50), unique=False, nullable=True)
+    current_price = db.Column(db.Float, unique=False, nullable=True)
+    binance_id = db.Column(db.Integer, unique=True, nullable=True)
+    orderId = db.Column(db.Integer, unique=False, nullable=True)
+    time_last_trades = db.Column(db.String(50), unique=False, nullable=True)
+    price = db.Column(db.Float, unique=False, nullable=True)
+    qty = db.Column(db.Float, unique=False, nullable=True)
+    quote_qty = db.Column(db.Float, unique=False, nullable=True)
+    commis = db.Column(db.Float, unique=False, nullable=True)
+    commisAsset = db.Column(db.String(20), unique=False, nullable=True)
+
+    def __init__(self, symbol, baseAsset, quoteAsset, current_price, binance_id, orderId, time_last_trades, price, qty,
+                 quote_qty, commis, commisAsset):
+        self.symbol = symbol
+        self.baseAsset = baseAsset
+        self.quoteAsset = quoteAsset
+        self.current_price = current_price
+        self.binance_id = binance_id
+        self.orderId = orderId
+        self.time_last_trades = time_last_trades
+        self.price = price
+        self.qty = qty
+        self.quote_qty = quote_qty
+        self.commis = commis
+        self.commisAsset = commisAsset
+
+    def __repr__(self):
+        return '<symbol %r>' % self.symbol
+
+
 class myTrades(db.Model):
     __tablename__ = 'mytrades'
     id = db.Column(db.Integer, primary_key=True)

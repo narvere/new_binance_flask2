@@ -1,6 +1,7 @@
 from flask import render_template, request
 from funcs import getting_data_from_binance, pairs_info_from_binance
-from dbs import AllTickers, PairsInfo, db, DbsUpdateTime, AllTickersUpdateTime, TickersInfoUpdateTime, myTrades
+from dbs import AllTickers, PairsInfo, db, DbsUpdateTime, AllTickersUpdateTime, TickersInfoUpdateTime, myTrades, \
+    coinInfotrades
 from funcs import read_all_pairs, coin_shown_engine, count_of_coins, all_tradable_pairs, db_updating_time
 from binance_info import client
 
@@ -26,8 +27,10 @@ async def info_tickers():
 
 
 def ticker_info(ticker):
-    all_pairs_info = db.session.query(PairsInfo).filter(
-        PairsInfo.baseAsset.in_([ticker])).order_by(PairsInfo.symbol).all()
+    # all_pairs_info = db.session.query(PairsInfo).filter(
+    #     PairsInfo.baseAsset.in_([ticker])).order_by(PairsInfo.symbol).all()
+    all_pairs_info = db.session.query(coinInfotrades).filter(
+        coinInfotrades.baseAsset.in_([ticker])).order_by(db.desc(coinInfotrades.time_last_trades)).all()
     return all_pairs_info
 
 
@@ -39,10 +42,9 @@ def coin(coin_name):
     # мзывает данные последнего обновления
     times, times_a, times_all = last_update_time()
     # мои торговые пары
-    all_pairs_info, ticker_i = my_trade_pairs(coin_name)
+    ticker_i = my_trade_pairs(coin_name)
 
-    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i, all_pairs_info=all_pairs_info,
-                            number=number, super_total_eur=super_total_eur, super_total_usd=super_total_usd,
+    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i,                            number=number, super_total_eur=super_total_eur, super_total_usd=super_total_usd,
                             times=times, times_a=times_a, times_all=times_all)
 
     return render_template('my_coin.html', **template_context)
@@ -53,12 +55,12 @@ def my_trade_pairs(coin_name):
     ticker_i = ticker_info(coin_name)
     # print(ticker_i.symbol)
     # my_last_trades("MBOXUSDT")
-    for i in ticker_i:
-        # print(i.symbol)
-        all_pairs_info = db.session.query(myTrades).filter(
-            myTrades.symbol == i.symbol).order_by(myTrades.symbol).all()
-        # print(all_pairs_info)
-        return all_pairs_info, ticker_i
+    # for i in ticker_i:
+    #     # print(i.symbol)
+    #     all_pairs_info = db.session.query(coinInfotrades).filter(
+    #         coinInfotrades.baseAsset == i.symbol).order_by(coinInfotrades.baseAsset).all()
+    #     # print(all_pairs_info)
+    return ticker_i
 
 
 # @app.route('/all_usdt/', methods=['POST', 'GET'])
