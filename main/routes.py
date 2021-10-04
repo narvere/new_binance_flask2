@@ -31,7 +31,9 @@ def ticker_info(ticker):
     #     PairsInfo.baseAsset.in_([ticker])).order_by(PairsInfo.symbol).all()
     all_pairs_info = db.session.query(coinInfotrades).filter(
         coinInfotrades.baseAsset.in_([ticker])).order_by(db.desc(coinInfotrades.time_last_trades)).all()
-    return all_pairs_info
+    first_pairs_info = db.session.query(coinInfotrades).filter(
+        coinInfotrades.baseAsset.in_([ticker])).order_by(db.desc(coinInfotrades.time_last_trades)).first()
+    return all_pairs_info, first_pairs_info
 
 
 # @app.route('/coin/<coin_name>/')
