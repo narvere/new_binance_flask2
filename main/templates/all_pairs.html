@@ -18,7 +18,7 @@
                         </thead>
                         <tbody>
                         {% for el in all_pairs %}
-                        {% if loop.index < 80 %}
+                        {% if loop.index < (all_pairs_count/2)|round %}
                         <tr>
                             <th scope="row">{{loop.index}}</th>
                             <td><a target="_blank" rel="noopener noreferrer"
@@ -44,7 +44,7 @@
                         </thead>
                         <tbody>
                         {% for el in all_pairs %}
-                        {% if loop.index >= 80 %}
+                        {% if loop.index >= (all_pairs_count/2)|round %}
                         <tr>
                             <th scope="row">{{loop.index}}</th>
                             <td><a target="_blank" rel="noopener noreferrer"

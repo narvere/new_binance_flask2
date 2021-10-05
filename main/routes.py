@@ -78,7 +78,7 @@ async def all_usdt():
 # @app.route('/get_all_pairs/', methods=['POST', 'GET'])
 def get_all_pairs():
     all_tradable_pairs(client)
-    all_pairs_get = read_all_pairs()
+    all_pairs_get, all_pairs_count = read_all_pairs()
 
     AllTickersUpdateTime.query.delete()
     times1 = db_updating_time()
@@ -88,7 +88,8 @@ def get_all_pairs():
 
     times, times_a, times_all = last_update_time()
 
-    return render_template('all_pairs.html', all_pairs=all_pairs_get, times=times, times_all=times_all, times_a=times_a)
+    return render_template('all_pairs.html', all_pairs=all_pairs_get, times=times, times_all=times_all, times_a=times_a,
+                           all_pairs_count=all_pairs_count)
 
 
 def last_update_time():
@@ -143,10 +144,10 @@ async def all_pairs():
 
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     tickers_number = count_of_coins(AllTickers)
-    all_pairs_binance = read_all_pairs()
+    all_pairs_binance, all_pairs_count = read_all_pairs()
     template_context = dict(all_pairs=all_pairs_binance, super_total_usd=super_total_usd,
                             super_total_eur=super_total_eur, number=number, tickers_number=tickers_number, times=times,
-                            times_all=times_all, times_a=times_a)
+                            times_all=times_all, times_a=times_a, all_pairs_count=all_pairs_count)
     return render_template('all_pairs.html', **template_context)
 
 

@@ -6,12 +6,10 @@ from tradingview_ta import TA_Handler, Interval
 from binance_info import status, balances, client, exchange_info
 # from funcs import trading_view_recommendation, db_updating_time
 from datetime import datetime
+
 # from jinja2 import environment
 
 trades_downloading = True
-
-
-
 
 
 def my_coin_info():
@@ -271,10 +269,16 @@ def read_all_pairs():
     # all_pairs = AllTickers.query.order_by(AllTickers.recommendatsion_all_day, AllTickers.recommendatsion).filter(
     #     AllTickers.recommendatsion_all_day == 'BUY', AllTickers.recommendatsion_all_day == 'STRONG_BUY').all()
     all_pairs = db.session.query(AllTickers).filter(
-        AllTickers.recommendatsion_all_day.in_(['STRONG_BUY', 'BUY'])).order_by(AllTickers.recommendatsion_all_day,
-                                                                                AllTickers.recommendatsion).all()
+        AllTickers.recommendatsion_all_day.in_(['STRONG_BUY', 'BUY']), AllTickers.recommendatsion.in_(
+            ['STRONG_BUY', 'BUY'])).order_by(db.desc(AllTickers.recommendatsion_all_day),
+                                             db.desc(AllTickers.recommendatsion)).all()
+    all_pairs_count = db.session.query(AllTickers).filter(
+        AllTickers.recommendatsion_all_day.in_(['STRONG_BUY', 'BUY']), AllTickers.recommendatsion.in_(
+            ['STRONG_BUY', 'BUY'])).order_by(AllTickers.recommendatsion_all_day,
+                                             AllTickers.recommendatsion).count()
+
     # print("ok")
-    return all_pairs
+    return all_pairs, all_pairs_count
 
 
 def all_tradable_pairs(client):
