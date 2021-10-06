@@ -10,7 +10,7 @@ from datetime import datetime
 
 # from jinja2 import environment
 
-trades_downloading = True
+trades_downloading = False
 
 
 def my_coin_info():
@@ -277,7 +277,7 @@ def currency(asset):
 
 
 def coin_shown_engine():
-    t0 = time()
+    # t0 = time()
     my_assets = Assets.query.order_by(-Assets.total_usd).all()
     # print(type(my_assets))
     # recommend = trading_view_recommendation('BTC')
@@ -289,8 +289,8 @@ def coin_shown_engine():
     except:
         pass
     number = count_of_coins(Assets)
-    tt = t0 - time()
-    print(tt)
+    # tt = t0 - time()
+    # print(tt)
     return my_assets, number, super_total_eur, super_total_usd
 
 

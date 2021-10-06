@@ -124,12 +124,26 @@ def last_update_time():
 
 # @app.route('/')
 
+def time_count(func):
+    def answer():
+        t0 = time.time()
+        times = func()
+        tt = time.time() - t0
+        print(time.time() - t0)
+        return times, tt
+
+    return answer
+
+
+@time_count
 def base():
+    # t0 = time.time()
     times, times_a, times_all = last_update_time()
 
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     # print(my_assets)
     tickers_number = count_of_coins(AllTickers)
+    # tt = time.time() - t0
     template_context = dict(
         my_assets=my_assets,
         super_total_usd=super_total_usd,
@@ -139,7 +153,9 @@ def base():
         times=times,
         times_all=times_all,
         times_a=times_a,
+        tt=tt
     )
+
     return render_template('index.html', **template_context)
 
 

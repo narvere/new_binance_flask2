@@ -78,6 +78,7 @@
                 <th scope="col">Текущая цена</th>
                 <th scope="col">binance_id</th>
                 <th scope="col">orderId</th>
+                <th scope="col">Chart</th>
             </tr>
             </thead>
             <tbody>
@@ -93,6 +94,9 @@
                 <td>{{ i.current_price }} {{ i.quoteAsset }}</td>
                 <td>{{ i.binance_id }}</td>
                 <td>{{ i.orderId }}</td>
+                <td><a target="_blank" rel="noopener noreferrer"
+                       href="https://ru.tradingview.com/chart/NxJ5WI0f/?symbol=BINANCE%3A{{ i.symbol }}"
+                       class="btn btn-outline-danger">Chart</a></td>
 
 
             </tr>
