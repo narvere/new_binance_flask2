@@ -265,13 +265,37 @@ from binance_info import client
 #         continue
 #     print(isBuyer)
 
-from dbs import myTrades, db, app, myTrades, PairsInfo, coinInfotrades, AllTickers
+from dbs import myTrades, db, app, myTrades, PairsInfo, coinInfotrades, AllTickers, Assets
+# with app.app_context():
+#     pairs = db.session.query(AllTickers).all()
+#     for el in pairs:
+#         print(el.ticker)
+#         orders = client.get_open_orders(symbol=el.ticker)
+#         for order in orders:
+#             # print(order)
+#             print(order['symbol'], order['orderId'], order['price'], order['origQty'], order['executedQty'], order['type'],
+#                   order['side'], order['stopPrice'], order['icebergQty'], order['time'])
+
+
+from datetime import datetime
+import time
+
+# with app.app_context():
+#     db.session.query(Assets).filter(Assets.asset == 'BTC').update({'total_eur': 777})
+#     db.session.commit()
+#     exists = db.session.query(Assets.id).filter_by(asset='LTC').first()
+#     print(exists)
+
+# time1 = time.time()
+# print(time1)
+# time.sleep(1)
+# time2 = time.time()
+# print(time2)
+
 with app.app_context():
-    pairs = db.session.query(AllTickers).all()
-    for el in pairs:
-        print(el.ticker)
-        orders = client.get_open_orders(symbol=el.ticker)
-        for order in orders:
-            # print(order)
-            print(order['symbol'], order['orderId'], order['price'], order['origQty'], order['executedQty'], order['type'],
-                  order['side'], order['stopPrice'], order['icebergQty'], order['time'])
+    # db.session.query(Assets).filter(Assets.update_time == 'Null')
+    # nonexists = db.session.query(Assets.asset).filter(Assets.update_time == None).all()
+    # print(nonexists)
+    Assets.query.filter(Assets.update_time == None).delete()
+    db.session.commit()
+

@@ -1,9 +1,10 @@
 from flask import render_template, request
 from funcs import getting_data_from_binance, pairs_info_from_binance
-from dbs import AllTickers, PairsInfo, db, DbsUpdateTime, AllTickersUpdateTime, TickersInfoUpdateTime, myTrades, \
+from dbs import AllTickers, db, DbsUpdateTime, AllTickersUpdateTime, TickersInfoUpdateTime, Assets, \
     coinInfotrades
 from funcs import read_all_pairs, coin_shown_engine, count_of_coins, all_tradable_pairs, db_updating_time
 from binance_info import client
+import time
 
 
 async def info_tickers():
@@ -20,9 +21,16 @@ async def info_tickers():
 
     times, times_a, times_all = last_update_time()
 
-    template_context = dict(my_assets=my_assets, super_total_usd=super_total_usd,
-                            super_total_eur=super_total_eur, number=number, tickers_number=tickers_number, times=times,
-                            times_all=times_all, times_a=times_a)
+    template_context = dict(
+        my_assets=my_assets,
+        super_total_usd=super_total_usd,
+        super_total_eur=super_total_eur,
+        number=number,
+        tickers_number=tickers_number,
+        times=times,
+        times_all=times_all,
+        times_a=times_a,
+    )
     return render_template('index.html', **template_context)
 
 
@@ -46,9 +54,18 @@ def coin(coin_name):
     # мои торговые пары
     ticker_i, first_pairs_info = my_trade_pairs(coin_name)
 
-    template_context = dict(coin_name=coin_name, my_assets=my_assets, ticker_i=ticker_i, number=number,
-                            super_total_eur=super_total_eur, super_total_usd=super_total_usd,
-                            times=times, times_a=times_a, times_all=times_all, first_pairs_info=first_pairs_info)
+    template_context = dict(
+        coin_name=coin_name,
+        my_assets=my_assets,
+        ticker_i=ticker_i,
+        number=number,
+        super_total_eur=super_total_eur,
+        super_total_usd=super_total_usd,
+        times=times,
+        times_a=times_a,
+        times_all=times_all,
+        first_pairs_info=first_pairs_info,
+    )
 
     return render_template('my_coin.html', **template_context)
 
@@ -88,8 +105,14 @@ def get_all_pairs():
 
     times, times_a, times_all = last_update_time()
 
-    return render_template('all_pairs.html', all_pairs=all_pairs_get, times=times, times_all=times_all, times_a=times_a,
-                           all_pairs_count=all_pairs_count)
+    return render_template(
+        'all_pairs.html',
+        all_pairs=all_pairs_get,
+        times=times,
+        times_all=times_all,
+        times_a=times_a,
+        all_pairs_count=all_pairs_count,
+    )
 
 
 def last_update_time():
@@ -107,16 +130,27 @@ def base():
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     # print(my_assets)
     tickers_number = count_of_coins(AllTickers)
-    template_context = dict(my_assets=my_assets, super_total_usd=super_total_usd,
-                            super_total_eur=super_total_eur, number=number, tickers_number=tickers_number, times=times,
-                            times_all=times_all, times_a=times_a)
+    template_context = dict(
+        my_assets=my_assets,
+        super_total_usd=super_total_usd,
+        super_total_eur=super_total_eur,
+        number=number,
+        tickers_number=tickers_number,
+        times=times,
+        times_all=times_all,
+        times_a=times_a,
+    )
     return render_template('index.html', **template_context)
 
 
 # @app.route('/my_coins/', methods=['POST', 'GET'])
 def my_coins():
+    now = time.time()
     # получаю все данные с бинанса
     getting_data_from_binance()
+    Assets.query.filter(
+        Assets.update_time < now,
+        Assets.update_time == None).delete()
     # удаляю время последнего апдейта
     DbsUpdateTime.query.delete()
     # получаю время последнего апдейта
@@ -132,9 +166,16 @@ def my_coins():
     # принимаю данные для вывода на страницу
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     # print(super_total_eur)
-    template_context = dict(my_assets=my_assets, super_total_usd=super_total_usd,
-                            super_total_eur=super_total_eur, number=number, tickers_number=tickers_number, times=times,
-                            times_all=times_all, times_a=times_a)
+    template_context = dict(
+        my_assets=my_assets,
+        super_total_usd=super_total_usd,
+        super_total_eur=super_total_eur,
+        number=number,
+        tickers_number=tickers_number,
+        times=times,
+        times_all=times_all,
+        times_a=times_a,
+    )
     return render_template('index.html', **template_context)
 
 
@@ -145,9 +186,17 @@ async def all_pairs():
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
     tickers_number = count_of_coins(AllTickers)
     all_pairs_binance, all_pairs_count = read_all_pairs()
-    template_context = dict(all_pairs=all_pairs_binance, super_total_usd=super_total_usd,
-                            super_total_eur=super_total_eur, number=number, tickers_number=tickers_number, times=times,
-                            times_all=times_all, times_a=times_a, all_pairs_count=all_pairs_count)
+    template_context = dict(
+        all_pairs=all_pairs_binance,
+        super_total_usd=super_total_usd,
+        super_total_eur=super_total_eur,
+        number=number,
+        tickers_number=tickers_number,
+        times=times,
+        times_all=times_all,
+        times_a=times_a,
+        all_pairs_count=all_pairs_count,
+    )
     return render_template('all_pairs.html', **template_context)
 
 

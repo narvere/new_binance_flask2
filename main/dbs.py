@@ -170,8 +170,10 @@ class Assets(db.Model):
     recommendatsion = db.Column(db.String(50), nullable=True)
     recommendatsion_d1 = db.Column(db.String(50), nullable=True)
     price = db.Column(db.Float, unique=False, nullable=True)
+    update_time = db.Column(db.Float, unique=False, nullable=True)
 
-    def __init__(self, asset, free, locked, total_usd, total_eur, recommendatsion, recommendatsion_d1, price):
+    def __init__(self, asset, free, locked, total_usd, total_eur, recommendatsion, recommendatsion_d1, price,
+                 update_time):
         self.asset = asset
         self.free = free
         self.locked = locked
@@ -180,6 +182,7 @@ class Assets(db.Model):
         self.recommendatsion = recommendatsion
         self.recommendatsion_d1 = recommendatsion_d1
         self.price = price
+        self.update_time = update_time
 
     def __repr__(self):
         return '<Assets %r>' % self.asset

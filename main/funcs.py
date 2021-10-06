@@ -1,5 +1,6 @@
 from dbs import AllTickers, myTrades, db, Assets, PairsInfo, coinInfotrades
 from time import time
+
 from tradingview_ta import TA_Handler, Interval
 # from datetime import datetime
 # from get_data_from_binance import client
@@ -65,8 +66,14 @@ def pairs_info_from_binance():
         print(symbol, price)
         exists = db.session.query(PairsInfo.id).filter_by(symbol=symbol).first() is not None
         if not exists:
-            pairs_info = PairsInfo(symbol=symbol, baseAsset=baseAsset, quoteAsset=quoteAsset, orderTypes=orderTypes,
-                                   permissions=permissions, test=price)
+            pairs_info = PairsInfo(
+                symbol=symbol,
+                baseAsset=baseAsset,
+                quoteAsset=quoteAsset,
+                orderTypes=orderTypes,
+                permissions=permissions,
+                test=price,
+            )
             db.session.add(pairs_info)
             db.session.commit()
         else:
@@ -82,25 +89,47 @@ def pairs_info_from_binance():
 
 def save_or_update_db():
     exists = db.session.query(Assets.id).filter_by(asset=asset).first() is not None
+    update_time = time()
     if not exists:
         # добавление данных в пустую таблицу
-        admin = Assets(asset=asset, free=free, locked=locked, total_usd=total_usd, total_eur=total_eur,
-                       recommendatsion=recommendatsion, recommendatsion_d1=recommendatsion_d1, price=price)
+        admin = Assets(
+            asset=asset,
+            free=free,
+            locked=locked,
+            total_usd=total_usd,
+            total_eur=total_eur,
+            recommendatsion=recommendatsion,
+            recommendatsion_d1=recommendatsion_d1,
+            price=price,
+            update_time=update_time,
+        )
         db.session.add(admin)
-        db.session.commit()
+        # db.session.commit()
 
     else:
         # обновление данных
-        admin = Assets.query.filter_by(asset=asset).first()
-        admin.free = free
-        admin.locked = locked
-        admin.total_usd = total_usd
-        admin.total_eur = total_eur
-        admin.recommendatsion = recommendatsion
-        admin.price = price
+        db.session.query(Assets).filter(Assets.asset == asset).update(
+            {
+                'free': free,
+                'locked': locked,
+                'total_usd': total_usd,
+                'total_eur': total_eur,
+                'recommendatsion': recommendatsion,
+                'price': price,
+                'update_time': update_time
+            }
+        )
 
-        db.session.add(admin)
-        db.session.commit()
+        # admin = Assets.query.filter_by(asset=asset).first()
+        # admin.free = free
+        # admin.locked = locked
+        # admin.total_usd = total_usd
+        # admin.total_eur = total_eur
+        # admin.recommendatsion = recommendatsion
+        # admin.price = price
+
+        # db.session.add(admin2)
+    db.session.commit()
 
 
 def get_prices(symbol):
