@@ -11,6 +11,7 @@ from routes import base, my_coins, all_pairs, get_all_pairs, all_usdt, coin, log
 # pip install flask-script
 # pip install flask-wtf
 # pip install Flask-Views
+# pip install python-dotenv
 
 # >>> from main2 import app
 # >>> app.url_map
