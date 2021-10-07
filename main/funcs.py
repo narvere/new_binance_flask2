@@ -115,6 +115,7 @@ def save_or_update_db():
                 'total_usd': total_usd,
                 'total_eur': total_eur,
                 'recommendatsion': recommendatsion,
+                'recommendatsion_d1': recommendatsion_d1,
                 'price': price,
                 'update_time': update_time
             }
@@ -150,10 +151,9 @@ def getting_data_from_binance():
                 asset = str(balance.get("asset"))
                 if asset != 'USDT' and asset != 'BETH':
                     try:
-                        # print(asset)
                         recommendatsion = trading_view_recommendation(asset, Interval.INTERVAL_4_HOURS)
                         recommendatsion_d1 = trading_view_recommendation(asset, Interval.INTERVAL_1_DAY)
-
+                        print(asset, recommendatsion, recommendatsion_d1)
                         avg_price_usd = client.get_avg_price(symbol=f'{asset}USDT')
                         price_eur = client.get_avg_price(symbol=f'EURUSDT')
                         price_e = round(float(price_eur.get("price")), 5)
@@ -277,10 +277,7 @@ def currency(asset):
 
 
 def coin_shown_engine():
-    # t0 = time()
     my_assets = Assets.query.order_by(-Assets.total_usd).all()
-    # print(type(my_assets))
-    # recommend = trading_view_recommendation('BTC')
     super_total_usd = currency('total_usd')
     super_total_eur = currency('total_eur')
     try:
@@ -289,8 +286,6 @@ def coin_shown_engine():
     except:
         pass
     number = count_of_coins(Assets)
-    # tt = t0 - time()
-    # print(tt)
     return my_assets, number, super_total_eur, super_total_usd
 
 

@@ -139,9 +139,7 @@ def last_update_time():
 def base():
     t0 = time.time()
     times, times_a, times_all = last_update_time()
-
     my_assets, number, super_total_eur, super_total_usd = coin_shown_engine()
-    # print(my_assets)
     tickers_number = count_of_coins(AllTickers)
     tt = time.time() - t0
     template_context = dict(
@@ -155,7 +153,6 @@ def base():
         times_a=times_a,
         tt=tt
     )
-
     return render_template('index.html', **template_context)
 
 
@@ -164,9 +161,8 @@ def my_coins():
     now = time.time()
     # получаю все данные с бинанса
     getting_data_from_binance()
-    Assets.query.filter(
-        Assets.update_time < now,
-        Assets.update_time == None).delete()
+    Assets.query.filter(Assets.update_time < now).delete()
+    Assets.query.filter(Assets.update_time == None).delete()
     # удаляю время последнего апдейта
     DbsUpdateTime.query.delete()
     # получаю время последнего апдейта
