@@ -300,20 +300,20 @@ import time
 #     db.session.commit()
 
 
-from binance_info import balances
-import time
-start = 0
-while True:
-    for balance in balances:
-        asset = str(balance.get("asset"))
-        if asset == 'USDT':
-            free = float(balance.get("free"))
-            if free > start:
-                print('это не старт')
-                print("сканирую...")
-                start = free
-            else:
-                continue
-            print(free)
-    time.sleep(1)
-
+# from binance_info import balances
+# import time
+# start = 0
+# while True:
+#     for balance in balances:
+#         asset = str(balance.get("asset"))
+#         if asset == 'USDT':
+#             free = float(balance.get("free"))
+#             if free > start:
+#                 print('это не старт')
+#                 print("сканирую...")
+#                 start = free
+#             else:
+#                 continue
+#             print(free)
+#     time.sleep(1)
+#
